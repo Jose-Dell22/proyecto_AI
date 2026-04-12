@@ -1,0 +1,54 @@
+.medical-container{
+  max-width:1200px;
+  margin:auto;
+  padding:30px;
+}
+
+.title{
+  text-align:center;
+  color:#1e3a8a;
+  margin-bottom:30px;
+}
+
+.diagnostic-layout{
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:25px;
+}
+
+.image-panel{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.result-panel{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.panel{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+.preview-img{
+  width:100%;
+  max-width:300px;
+  border-radius:10px;
+  border:2px solid #d1d5db;
+}
+
+.metrics-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.metrics-table td{
+  border-bottom:1px solid #e2e8f0;
+  padding:8px;
+}

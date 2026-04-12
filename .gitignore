@@ -1,8 +1,103 @@
-.venv/
-.vscode/
-__pycache__/
-**/__pycache__/
-dataset_balanceado/
-dataset_balanceado2/
+# =========================
+# 🔥 DEPENDENCIAS
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-*.pth
+# =========================
+# 📦 BUILD / DIST
+# =========================
+dist/
+build/
+out/
+.next/
+coverage/
+
+# =========================
+# 🧪 ENV FILES
+# =========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================
+# 💻 SISTEMA OPERATIVO
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# 🧠 EDITORES / IDE
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# 🐳 DOCKER
+# =========================
+docker-compose.override.yml
+
+# =========================
+# 🐍 PYTHON (backend ML)
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# =========================
+# 🧪 TEST / COVERAGE
+# =========================
+.pytest_cache/
+jest-cache/
+
+# =========================
+# 📦 MODELOS
+# =========================
+backend/modelsv3/
+backend/train
+# =========================
+# 💻 FRONTEND
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# =========================
+# 📦 PACKAGES
+# =========================
+*.tgz
+*.tar.gz
+
+# =========================
+# 📊 LOGS
+# =========================
+logs/
+*.log
+
+# =========================
+# 🧾 TEMP
+# =========================
+tmp/
+temp/
+.cache/

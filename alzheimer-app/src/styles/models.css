@@ -1,0 +1,39 @@
+.models-container{
+  width:90%;
+  max-width:1200px;
+  margin:auto;
+  margin-top:40px;
+  text-align:center;
+}
+
+.models-title{
+  font-size:32px;
+  margin-bottom:30px;
+  color:#1e3a8a;
+}
+
+.models-table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.models-table th{
+  background:#2563eb;
+  color:white;
+  padding:18px;
+  font-size:20px;
+}
+
+.models-table td{
+  padding:16px;
+  font-size:18px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.models-table tr:hover{
+  background:#f1f5f9;
+}
