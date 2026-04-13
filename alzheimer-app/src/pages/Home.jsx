@@ -11,7 +11,6 @@ const Home = () => {
   const [preview, setPreview] = useState(null);
   const [gradcam, setGradcam] = useState(null);
 
-  // ✅ CAMBIADO AQUÍ
   const [model, setModel] = useState("DenseNet121");
 
   const [result, setResult] = useState(null);
@@ -22,38 +21,47 @@ const Home = () => {
     setPreview(URL.createObjectURL(file));
   };
 
- const handlePredict = async () => {
+  const handlePredict = async () => {
 
-  if (!image) {
-    alert("Por favor suba una imagen MRI");
-    return;
-  }
+    if (!image) {
+      alert("Por favor suba una imagen MRI");
+      return;
+    }
 
-  // ✅ LIMPIAR RESULTADOS ANTERIORES ANTES DE PREDICCIÓN
-  setResult(null);
-  setGradcam(null);
-  setMetrics(null);
+    // limpiar resultados anteriores
+    setResult(null);
+    setGradcam(null);
+    setMetrics(null);
 
-  try {
+    try {
 
-    const response = await predictModel(model, image);
+      const response = await predictModel(model, image);
 
-    setResult(response.prediction);
-    setGradcam(response.gradcam);
-    setMetrics(response.metrics);
+      setResult({
+        prediction: response.prediction,
+        confidence: response.confidence,
+        probabilities: response.probabilities
+      });
 
-  } catch (error) {
+      setGradcam(response.gradcam);
+      setMetrics(response.metrics);
 
-    console.error("Error en predicción:", error);
-    alert("Error conectando con el backend");
+    } catch (error) {
 
-  }
-};
+      console.error("Error en predicción:", error);
+      alert("Error conectando con el backend");
+
+    }
+
+  };
 
   return (
+
     <div className="medical-container">
 
-      <h1 className="title">Diagnóstico asistido por IA</h1>
+      <h1 className="title">
+        Diagnóstico asistido por IA
+      </h1>
 
       <div className="diagnostic-layout">
 
@@ -61,28 +69,49 @@ const Home = () => {
         <div className="image-panel">
 
           <div className="panel">
+
             <h3>Subir MRI</h3>
+
             <ImageUploader setImage={handleImageUpload} />
+
           </div>
 
           <div className="panel">
+
             <h3>Imagen original</h3>
 
             {preview ? (
-              <img src={preview} alt="MRI preview" className="preview-img"/>
+
+              <img
+                src={preview}
+                alt="MRI preview"
+                className="preview-img"
+              />
+
             ) : (
+
               <p>No hay imagen cargada</p>
+
             )}
 
           </div>
 
           <div className="panel">
+
             <h3>Grad-CAM</h3>
 
             {gradcam ? (
-              <img src={gradcam} alt="gradcam" className="preview-img"/>
+
+              <img
+                src={gradcam}
+                alt="gradcam"
+                className="preview-img"
+              />
+
             ) : (
+
               <p>Ejecute una predicción</p>
+
             )}
 
           </div>
@@ -93,45 +122,103 @@ const Home = () => {
         <div className="result-panel">
 
           <div className="panel">
+
             <h3>Seleccionar modelo</h3>
-            <ModelSelector model={model} setModel={setModel} />
+
+            <ModelSelector
+              model={model}
+              setModel={setModel}
+            />
+
           </div>
 
           <div className="panel">
+
             <h3>Predicción</h3>
 
             <button onClick={handlePredict}>
               Ejecutar diagnóstico
             </button>
 
-            {result && <PredictionCard result={result} />}
+            {result && (
+
+              <div className="prediction-result">
+
+                <PredictionCard result={result} />
+
+                {/* Clase detectada */}
+                <p className="detected-class">
+
+                  <strong>Clase detectada:</strong>{" "}
+                  {result.prediction}
+
+                </p>
+
+                {/* Confianza */}
+                {result.confidence && (
+
+                  <p>
+
+                    <strong>Confianza:</strong>{" "}
+                    {(result.confidence * 100).toFixed(2)}%
+
+                  </p>
+
+                )}
+
+              </div>
+
+            )}
+
           </div>
 
           {/* MÉTRICAS */}
           {metrics && (
+
             <div className="panel">
+
               <h3>Métricas del modelo</h3>
 
               <table className="metrics-table">
+
                 <tbody>
+
                   <tr>
+
                     <td>Accuracy</td>
-                    <td>{metrics.accuracy}</td>
+
+                    <td>
+                      {metrics.accuracy}
+                    </td>
+
                   </tr>
 
                   <tr>
+
                     <td>Precision</td>
-                    <td>{metrics.precision}</td>
+
+                    <td>
+                      {metrics.precision}
+                    </td>
+
                   </tr>
 
                   <tr>
+
                     <td>Recall</td>
-                    <td>{metrics.recall}</td>
+
+                    <td>
+                      {metrics.recall}
+                    </td>
+
                   </tr>
+
                 </tbody>
+
               </table>
 
             </div>
+
           )}
 
         </div>
@@ -139,7 +226,9 @@ const Home = () => {
       </div>
 
     </div>
+
   );
+
 };
 
 export default Home;

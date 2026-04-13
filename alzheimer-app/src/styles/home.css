@@ -52,3 +52,21 @@
   border-bottom:1px solid #e2e8f0;
   padding:8px;
 }
+.class-probabilities{
+  display:flex;
+  flex-direction:column;
+  align-items:center;   /* centra horizontal */
+  justify-content:center;
+  text-align:center;
+  margin-top:10px;
+}
+
+.class-probabilities h4{
+  margin-bottom:8px;
+}
+
+.class-probabilities p{
+  margin:3px 0;
+  width:100%;
+  max-width:220px; /* opcional: para que no se estire */
+}
