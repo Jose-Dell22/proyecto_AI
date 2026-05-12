@@ -1,27 +1,137 @@
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 30px;
-  background:#111827;
-  color:white;
+/* Importar variables médicas */
+@import url('./main.css');
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  background: linear-gradient(135deg, var(--medical-primary), var(--medical-secondary));
+  color: var(--medical-white);
+  box-shadow: 0 4px 20px rgba(30, 95, 142, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
-.navbar-logo{
-  font-size:20px;
-  font-weight:bold;
+.navbar-logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
 }
 
-.navbar-links{
-  list-style:none;
-  display:flex;
-  gap:20px;
+.navbar-logo::before {
+  content: '⚕️';
+  font-size: 1.6rem;
+  animation: medicalSpin 3s linear infinite;
 }
 
-.navbar-links li{
-  cursor:pointer;
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
-.navbar-links li:hover{
-  color:#60a5fa;
+.navbar-links li {
+  cursor: pointer;
+  position: relative;
+}
+
+.navbar-links a {
+  color: var(--medical-white);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.navbar-links a:hover::before {
+  left: 100%;
+}
+
+.navbar-links a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.navbar-links a.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--medical-white);
+  font-weight: 600;
+  border-bottom: 2px solid var(--medical-accent);
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+.navbar-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--medical-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--medical-accent);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .navbar-logo {
+    font-size: 1.2rem;
+  }
+  
+  .navbar-links {
+    gap: 15px;
+  }
+  
+  .navbar-links a {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Medical icon animations */
+@keyframes medicalSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Pulse effect for logo */
+@keyframes medicalPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.navbar-logo:hover::before {
+  animation: medicalPulse 1s ease infinite;
 }

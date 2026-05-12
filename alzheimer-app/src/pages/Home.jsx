@@ -1,167 +1,73 @@
-import React, { useState } from "react";
-import ImageUploader from "../components/ImageUploader";
-import PredictionCard from "../components/PredictionCard";
-import { predictModel } from "../api/modelApi";
-import "../styles/home.css";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../styles/Home.css";
 
-const Home = () => {
-
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [gradcam, setGradcam] = useState(null);
-
-  const [result, setResult] = useState(null);
-  const [metrics, setMetrics] = useState(null);
-
-  const handleImageUpload = (file) => {
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
-  };
-
-  const handlePredict = async () => {
-
-    if (!image) {
-      alert("Por favor suba una imagen MRI");
-      return;
-    }
-
-    setResult(null);
-    setGradcam(null);
-    setMetrics(null);
-
-    try {
-
-      // 🔥 Modelo fijo
-      const response = await predictModel("DenseNet121", image);
-
-      setResult({
-        prediction: response.prediction,
-        confidence: response.confidence,
-        probabilities: response.probabilities
-      });
-
-      setGradcam(response.gradcam);
-      setMetrics(response.metrics);
-
-    } catch (error) {
-      console.error("Error en predicción:", error);
-      alert("Error conectando con el backend");
-    }
-
-  };
-
+const Inicio = () => {
   return (
-
-    <div className="medical-container">
-
-      <h1 className="title">
-        Diagnóstico asistido por IA
-      </h1>
-
-      <div className="diagnostic-layout">
-
-        {/* COLUMNA IMÁGENES */}
-        <div className="image-panel">
-
-          <div className="panel">
-            <h3>Subir MRI</h3>
-            <ImageUploader setImage={handleImageUpload} />
-          </div>
-
-          <div className="panel">
-            <h3>Imagen original</h3>
-            {preview ? (
-              <img src={preview} alt="MRI preview" className="preview-img" />
-            ) : (
-              <p>No hay imagen cargada</p>
-            )}
-          </div>
-
-          <div className="panel">
-            <h3>Grad-CAM</h3>
-            {gradcam ? (
-              <img src={gradcam} alt="gradcam" className="preview-img" />
-            ) : (
-              <p>Ejecute una predicción</p>
-            )}
-          </div>
-
+    <div className="inicio-container">
+      <div className="inicio-content">
+        <div className="inicio-header">
+          <h1 className="inicio-title">
+            🏥 AI-Powered Diagnosis System
+          </h1>
+          <p className="inicio-subtitle">
+            Alzheimer's disease assisted diagnosis using artificial intelligence
+          </p>
         </div>
 
-        {/* COLUMNA RESULTADOS */}
-        <div className="result-panel">
-
-          <div className="panel">
-            <h3>Modelo</h3>
-            <p><strong>DenseNet121</strong></p>
+        <div className="inicio-features">
+          <div className="feature-card">
+            <div className="feature-icon">🧠</div>
+            <h3>MRI Analysis</h3>
+            <p>Advanced processing of brain magnetic resonance imaging</p>
           </div>
 
-          <div className="panel">
-
-            <h3>Predicción</h3>
-
-            <button onClick={handlePredict}>
-              Ejecutar diagnóstico
-            </button>
-
-            {result && (
-
-              <div className="prediction-result">
-
-                <PredictionCard result={result} />
-
-                <p className="detected-class">
-                  <strong>Clase detectada:</strong> {result.prediction}
-                </p>
-
-                {result.confidence && (
-                  <p>
-                    <strong>Confianza:</strong>{" "}
-                    {(result.confidence * 100).toFixed(2)}%
-                  </p>
-                )}
-
-              </div>
-
-            )}
-
+          <div className="feature-card">
+            <div className="feature-icon">🤖</div>
+            <h3>Advanced AI</h3>
+            <p>DenseNet121 model optimized for early detection</p>
           </div>
 
-          {metrics && (
-
-            <div className="panel">
-
-              <h3>Métricas del modelo</h3>
-
-              <table className="metrics-table">
-                <tbody>
-                  <tr>
-                    <td>Accuracy</td>
-                    <td>{metrics.accuracy}</td>
-                  </tr>
-                  <tr>
-                    <td>Precision</td>
-                    <td>{metrics.precision}</td>
-                  </tr>
-                  <tr>
-                    <td>Recall</td>
-                    <td>{metrics.recall}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-
-          )}
-
+          <div className="feature-card">
+            <div className="feature-icon">📊</div>
+            <h3>Precise Results</h3>
+            <p>Detailed metrics and Grad-CAM visualization for interpretation</p>
+          </div>
         </div>
 
+        <div className="inicio-actions">
+          <Link to="/analysis" className="action-button primary">
+            🚀 Start Analysis
+          </Link>
+          <Link to="/models" className="action-button secondary">
+            📈 View Models
+          </Link>
+        </div>
+
+        <div className="inicio-info">
+          <div className="info-section">
+            <h4>🎯 How it works?</h4>
+            <ol>
+              <li>Upload a brain MRI image</li>
+              <li>Our AI analyzes the image automatically</li>
+              <li>Receive detailed results with metrics</li>
+              <li>Visualize areas of interest with Grad-CAM</li>
+            </ol>
+          </div>
+
+          <div className="info-section">
+            <h4>⚡ Key Features</h4>
+            <ul>
+              <li>Fast and secure processing</li>
+              <li>Professional medical interface</li>
+              <li>Results with confidence and metrics</li>
+              <li>Advanced result visualization</li>
+            </ul>
+          </div>
+        </div>
       </div>
-
     </div>
-
   );
-
 };
 
-export default Home;
+export default Inicio;

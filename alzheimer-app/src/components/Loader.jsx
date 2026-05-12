@@ -1,5 +1,5 @@
 const Loader = () => {
-  return <p>Procesando imagen...</p>;
+  return <p>Processing image...</p>;
 };
 
 export default Loader;

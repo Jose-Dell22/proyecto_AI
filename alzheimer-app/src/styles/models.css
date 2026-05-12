@@ -1,39 +1,159 @@
-.models-container{
-  width:90%;
-  max-width:1200px;
-  margin:auto;
-  margin-top:40px;
-  text-align:center;
+/* Importar variables médicas desde main.css */
+@import url('./main.css');
+
+.models-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 40px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--medical-light) 0%, var(--medical-white) 100%);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(30, 95, 142, 0.1);
+  border: 1px solid var(--medical-border);
 }
 
-.models-title{
-  font-size:32px;
-  margin-bottom:30px;
-  color:#1e3a8a;
+.models-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--medical-primary);
+  font-weight: 300;
+  letter-spacing: 1px;
+  position: relative;
 }
 
-.models-table{
-  width:100%;
-  border-collapse:collapse;
-  background:white;
-  box-shadow:0 6px 20px rgba(0,0,0,0.08);
-  border-radius:10px;
-  overflow:hidden;
+.models-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: var(--medical-accent);
+  margin: 15px auto;
+  border-radius: 2px;
 }
 
-.models-table th{
-  background:#2563eb;
-  color:white;
-  padding:18px;
-  font-size:20px;
+.models-title::before {
+  content: '🧠';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 15px;
 }
 
-.models-table td{
-  padding:16px;
-  font-size:18px;
-  border-bottom:1px solid #e5e7eb;
+.models-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--medical-white);
+  box-shadow: 0 8px 30px rgba(30, 95, 142, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--medical-border);
 }
 
-.models-table tr:hover{
-  background:#f1f5f9;
+.models-table th {
+  background: linear-gradient(135deg, var(--medical-primary), var(--medical-secondary));
+  color: var(--medical-white);
+  padding: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
 }
+
+.models-table th::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--medical-accent);
+}
+
+.models-table td {
+  padding: 18px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--medical-border);
+  color: var(--medical-dark);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.models-table tr:hover {
+  background: var(--medical-light);
+  transform: translateX(5px);
+}
+
+.models-table tr:hover td {
+  color: var(--medical-primary);
+  font-weight: 600;
+}
+
+.models-table td:first-child {
+  font-weight: 600;
+  color: var(--medical-primary);
+  background: var(--medical-light);
+  border-right: 2px solid var(--medical-border);
+}
+
+/* Estilos adicionales para valores métricos */
+.models-table td:not(:first-child) {
+  position: relative;
+}
+
+.models-table td:not(:first-child)::after {
+  content: '📊';
+  position: absolute;
+  right: 10px;
+  opacity: 0.3;
+  font-size: 1.2rem;
+}
+
+.models-table tr:hover td:not(:first-child)::after {
+  opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .models-container {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  .models-title {
+    font-size: 2rem;
+  }
+  
+  .models-table th,
+  .models-table td {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .models-table td:not(:first-child)::after {
+    display: none;
+  }
+}
+
+/* Animación para la tabla */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.models-table tbody tr {
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+.models-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.models-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+.models-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+.models-table tbody tr:nth-child(4) { animation-delay: 0.4s; }

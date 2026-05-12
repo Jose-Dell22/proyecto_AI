@@ -7,27 +7,27 @@ const PredictionCard = ({ result }) => {
   return (
     <div className="card">
 
-      <h3>Resultado del diagnóstico</h3>
+      <h3>Diagnosis Result</h3>
 
-      {/* Clase detectada */}
+      {/* Detected Class */}
       <p>
-        <strong>Clase detectada:</strong>{" "}
+        <strong>Detected Class:</strong>{" "}
         {result.prediction}
       </p>
 
-      {/* Confianza */}
+      {/* Confidence */}
       {result.confidence && (
         <p>
-          <strong>Confianza:</strong>{" "}
+          <strong>Confidence:</strong>{" "}
           {(result.confidence * 100).toFixed(2)}%
         </p>
       )}
 
-      {/* Probabilidades */}
+      {/* Probabilities */}
       {result.probabilities && (
         <div className="class-probabilities">
 
-          <h4>Probabilidades por clase</h4>
+          <h4>Class Probabilities</h4>
 
           <table className="prob-table">
             <tbody>
