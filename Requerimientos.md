@@ -1,1142 +1,975 @@
-# Requerimientos del Sistema de Diagnóstico de Alzheimer por IA
+# Requerimientos
+
 
 ---
 
-## REQUERIMIENTOS FUNCIONALES (RF)
+## Página 1
 
-### RF-01: Subida y validación de imágenes MRI
-**Código de identificación:** RF-01  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 1  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Médico especialista  
 
-**Descripción:** El sistema debe permitir al usuario cargar imágenes de resonancia magnética cerebral (MRI) en formatos JPG, PNG y DICOM, validando tanto el formato como la coherencia del contenido antes de permitir su uso en el análisis.
-
-**Justificación:** Asegurar que las imágenes utilizadas sean válidas y adecuadas para el procesamiento por modelos de inteligencia artificial, evitando resultados incorrectos.
-
-**Precondiciones:**
-- Usuario dentro del sistema
-- Interfaz cargada correctamente
-
-**Restricciones:**
-- Formatos permitidos: JPG, PNG, DICOM
-- Tamaño máximo: 10 MB
-- Solo imágenes médicas (no fotos comunes)
-
-**Dependencia:** Módulo de validación y carga de archivos
-
-**Entradas:** Archivo de imagen MRI
-
-**Proceso:**
-1. Usuario selecciona archivo
-2. Sistema valida formato
-3. Sistema valida tamaño
-4. Sistema analiza contenido básico
-5. Se muestra vista previa
-
-**Salida:** Imagen válida cargada en el sistema
-
-**Postcondiciones:** Imagen disponible para análisis posterior
-
-**Criterios de aceptación:**
-1. El sistema acepta únicamente archivos con extensiones .jpg, .png o .dcm (rechaza otros con mensaje claro).
-2. Si el archivo supera los 10 MB, se muestra mensaje: "El archivo excede el tamaño permitido".
-3. Se genera una vista previa visible en menos de 2 segundos tras la carga.
-4. Si el archivo no corresponde a una imagen válida, el sistema muestra: "Archivo no válido o corrupto".
-5. El sistema no permite continuar al análisis sin una imagen válida cargada.
-
-**Requerimientos no funcionales:** Usabilidad, rendimiento  
-**Estado:** Pendiente  
-**Observaciones:** Se puede mejorar con validación automática de estructuras cerebrales
+Campo Descripción
+Título del 
+Requerimiento
+Carga y validación de imágenes MRI
+Código de 
+identificación
+RF-01
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia Usuario 1
+Descripción El sistema debe permitir al usuario cargar una imagen de resonancia 
+magnética cerebral (MRI) en secuencia T1 desde su dispositivo. 
+Antes de habilitar el análisis, el sistema valida automáticamente el 
+formato del archivo (JPG o PNG), su tamaño máximo (10 MB) y su 
+integridad como imagen válida. La imagen debe corresponder a un 
+corte axial T1, ya que el modelo fue entrenado exclusivamente con 
+imágenes en dicho protocolo. Cualquier archivo que no cumpla estas 
+condiciones es rechazado con un mensaje descriptivo en español.
+Justificación Garantizar la integridad de los datos de entrada es crítico en un 
+sistema de diagnóstico asistido. El procesamiento de archivos 
+corruptos, en formato incorrecto o que no correspondan a imágenes 
+MRI reales puede producir predicciones erróneas con consecuencias 
+clínicas graves.
+Precondiciones• El usuario ha iniciado la sesión y se encuentra en la interfaz de 
+análisis.
+• La interfaz de carga de imágenes está operativa y accesible.
+Restricciones • Solo se aceptan archivos con extensión .jpg o .png.
+• El tamaño máximo del archivo es de 10 MB.
+• No es posible iniciar la predicción sin una imagen válida cargada.
+• Solo se puede tener una imagen activa a la vez; cargar una nueva 
+reemplaza la anterior.
+Prioridad Alta/Must
+Dificultad Normal
+Dependencia Ninguna
+Actores Médico especialista, Profesional de la salud
 
 ---
 
-### RF-02: Selección de modelo de inteligencia artificial
-**Código de identificación:** RF-02  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 2  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Investigador médico  
+## Página 2
 
-**Descripción:** El sistema debe permitir al usuario seleccionar entre diferentes modelos de deep learning disponibles para ejecutar el análisis.
 
-**Justificación:** Permite comparar resultados y seleccionar el modelo más adecuado según el contexto clínico.
-
-**Precondiciones:** Modelos previamente cargados en el sistema
-
-**Restricciones:** Solo modelos previamente entrenados y registrados
-
-**Dependencia:** Base de datos de modelos
-
-**Entradas:** Selección del modelo
-
-**Proceso:**
-1. Mostrar lista de modelos
-2. Mostrar métricas
-3. Usuario selecciona
-
-**Salida:** Modelo seleccionado
-
-**Postcondiciones:** Modelo listo para predicción
-
-**Criterios de aceptación:**
-1. El sistema muestra al menos 4 modelos disponibles.
-2. Cada modelo muestra métricas: accuracy, precision y recall.
-3. El modelo seleccionado se resalta visualmente (color o etiqueta "activo").
-4. El usuario puede cambiar de modelo antes de ejecutar la predicción.
-5. Si no hay modelo seleccionado, el sistema selecciona uno por defecto.
-
-**Requerimientos no funcionales:** Usabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Se recomienda agregar descripción técnica por modelo
+Campo Descripción
+Entradas • Archivo de imagen seleccionado por el usuario (JPG o PNG), 
+correspondiente a una secuencia MRI T1.
+Proceso • El usuario presiona el botón 'Cargar imagen'.
+• El sistema abre el selector de archivos del dispositivo.
+• El usuario selecciona el archivo.
+• El sistema verifica la extensión del archivo (.jpg, .png).
+• El sistema verifica que el tamaño no supere 10 MB.
+• El sistema verifica que el contenido sea una imagen válida (no 
+corrupta).
+• Si todas las validaciones pasan, el sistema muestra la vista previa 
+de la imagen y habilita el botón 'Predecir'.
+• Si alguna validación falla, el sistema muestra el mensaje de error 
+correspondiente y no habilita el botón 'Predecir'.
+Salida • Vista previa de la imagen MRI cargada, visible en menos de 2 
+segundos.
+• Botón 'Predecir' habilitado.
+• Mensaje de error específico en caso de fallo de validación.
+Postcondiciones• La imagen validada queda disponible en memoria para ser enviada 
+al backend en la siguiente acción del usuario.
+Criterios de 
+aceptación
+• CA-01.1: El sistema acepta sin error archivos con extensión .jpg y 
+.png.
+• CA-01.2: El sistema rechaza archivos con extensión no permitida 
+mostrando: 'Formato no soportado. Use JPG o PNG.'
+• CA-01.3: El sistema rechaza archivos mayores a 10 MB mostrando: 
+'El archivo excede el tamaño máximo de 10 MB.'
+• CA-01.4: El sistema rechaza archivos corruptos o no legibles como 
+imagen mostrando: 'Archivo no válido o corrupto.'
+• CA-01.5: La vista previa de la imagen se renderiza en menos de 2 
+segundos tras la validación exitosa.
 
 ---
 
-### RF-03: Ejecución de predicción
-**Código de identificación:** RF-03  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 3  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Profesional de salud  
+## Página 3
 
-**Descripción:** El sistema debe permitir ejecutar el análisis de la imagen MRI mediante el modelo DenseNet121 predefinido.
 
-**Justificación:** Permite obtener diagnósticos asistidos automáticamente con un modelo optimizado.
-
-**Precondiciones:**
-- Imagen cargada
-- Modelo DenseNet121 disponible
-
-**Restricciones:** Conexión activa al backend, uso exclusivo del modelo DenseNet121
-
-**Dependencia:** API /predict
-
-**Entradas:** Imagen MRI
-
-**Proceso:**
-1. Usuario presiona botón
-2. Validación de imagen
-3. Envío al backend con modelo fijo
-4. Procesamiento
-
-**Salida:** Resultado de predicción
-
-**Postcondiciones:** Resultado almacenado temporalmente
-
-**Criterios de aceptación:**
-1. El botón "Predecir" permanece deshabilitado si no hay imagen cargada.
-2. Al hacer clic, aparece un indicador de carga visible.
-3. El tiempo de respuesta no supera los 5 segundos en condiciones normales.
-4. Si falla la conexión, se muestra: "Error de conexión con el servidor".
-5. El sistema evita múltiples envíos simultáneos del mismo análisis.
-6. El sistema utiliza automáticamente el modelo DenseNet121 sin opción de selección.
-
-**Requerimientos no funcionales:** Rendimiento, fiabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Considerar colas de procesamiento
-
----
-
-### RF-04: Visualización de resultados
-**Código de identificación:** RF-04  
-**Tipo de requerimiento:** Funcional  
-**Prioridad:** Alta  
-**Dificultad:** Fácil  
-**Actores:** Médico  
-
-**Descripción:** Mostrar los resultados del análisis incluyendo clase predicha, nivel de confianza y probabilidades por clase.
-
-**Justificación:** Facilita la interpretación médica del resultado.
-
-**Precondiciones:** Predicción realizada
-
-**Restricciones:** Datos provenientes del backend
-
-**Dependencia:** RF-03
-
-**Entradas:** Resultado del modelo
-
-**Proceso:**
-1. Recepción
-2. Formato
-3. Visualización
-
-**Salida:** Resultados interpretables
-
-**Postcondiciones:** Datos visibles al usuario
-
-**Criterios de aceptación:**
-1. Se muestra la clase detectada (ej: "Mild Dementia").
-2. Se muestra el porcentaje de confianza (ej: 87.5%).
-3. Se muestran todas las clases con sus probabilidades.
-4. Los datos se presentan en formato legible (tabla o gráfico).
-5. La información aparece en menos de 1 segundo tras recibir respuesta.
-
-**Requerimientos no funcionales:** Usabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Uso de gráficos mejora interpretación
+Campo Descripción
+• CA-01.6: El botón 'Predecir' permanece deshabilitado si no hay una 
+imagen válida cargada.
+Requerimientos 
+no funcionales
+• Usabilidad: los mensajes de error son claros, específicos y en 
+español.
+• Rendimiento: la validación del archivo se completa en menos de 1 
+segundo para archivos de hasta 10 MB.
+• Fiabilidad: el sistema no falla silenciosamente; cualquier error de 
+validación genera retroalimentación visible al usuario.
+Estado Pendiente
+Observaciones La imagen debe corresponder a una secuencia MRI T1 (corte axial), 
+ya que el modelo DenseNet121 + CBAM fue entrenado 
+exclusivamente con imágenes en dicho protocolo. El uso de 
+secuencias distintas (T2, FLAIR, etc.) puede producir predicciones 
+incorrectas. Esta validación de protocolo es responsabilidad del 
+usuario; el sistema no puede verificar automáticamente la secuencia 
+MRI desde un JPG o PNG.
+Campo Descripción
+Título del 
+Requerimiento
+Ejecución de predicción con DenseNet121 + CBAM
+Código de 
+identificación
+RF-02
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia Usuario 2
+Descripción El sistema debe permitir al usuario ejecutar el análisis de clasificación 
+de la imagen MRI cargada mediante un único clic. El frontend envía la 
+imagen al backend a través de la API REST, el backend ejecuta la 
+inferencia exclusivamente con el modelo DenseNet121+CBAM, y 
+retorna el resultado al frontend. Durante el procesamiento, el sistema 
+muestra un indicador de progreso visible que bloquea el envío de 
+solicitudes duplicadas.
+Justificación La predicción es la funcionalidad central del sistema. Debe ser simple 
+de invocar, rápida (máx. 5 s) y robusta ante errores de red o del 
+servidor. El bloqueo de solicitudes simultáneas evita condiciones de 
+carrera y resultados inconsistentes.
 
 ---
 
-### RF-05: Visualización Grad-CAM
-**Código:** RF-05  
-**Tipo:** Funcional  
-**Prioridad:** Alta  
-**Dificultad:** Difícil  
-**Actores:** Neurorradiólogo  
+## Página 4
 
-**Descripción:** Mostrar un mapa de calor que indique las regiones relevantes en la imagen MRI utilizadas por el modelo.
 
-**Justificación:** Permite interpretar decisiones del modelo.
-
-**Precondiciones:** Predicción completada
-
-**Restricciones:** Compatible con modelos usados
-
-**Dependencia:** Modelo IA
-
-**Entradas:** Imagen + mapa
-
-**Proceso:** Generación y superposición
-
-**Salida:** Imagen interpretativa
-
-**Postcondiciones:** Visualización activa
-
-**Criterios de aceptación:**
-1. El mapa se genera automáticamente tras la predicción.
-2. Se muestra superpuesto a la imagen original.
-3. Las zonas de mayor relevancia se destacan en colores (rojo/amarillo).
-4. El usuario puede alternar entre imagen original y Grad-CAM.
-5. La generación no supera los 3 segundos adicionales.
-
-**Requerimientos no funcionales:** Rendimiento  
-**Estado:** Pendiente  
-**Observaciones:** Puede requerir GPU
+Campo Descripción
+Precondiciones• RF-01 completado: existe una imagen MRI válida cargada en 
+memoria.
+• El backend está activo y accesible en la red.
+Restricciones • El modelo de inferencia utilizado es exclusivamente DenseNet121 + 
+CBAM; no se permite sustituirlo por otro.
+• No se permiten múltiples solicitudes simultáneas de la misma sesión.
+• El tiempo de respuesta del backend no debe superar 5 segundos.
+Prioridad Alta/Must
+Dificultad Difícil
+Dependencia RF-01-
+Actores Profesional de la salud, Sistema (frontend/backend)
+Entradas • Imagen MRI T1 validada (formato JPG o PNG), proveniente de RF-
+01.
+Proceso • El usuario presiona el botón 'Predecir'.
+• El sistema verifica que existe una imagen válida en memoria (guard 
+clause).
+• El frontend deshabilita el botón 'Predecir' y muestra el indicador de 
+progreso.
+• El frontend envía una solicitud HTTP POST al endpoint /predict con 
+la imagen como cuerpo de la petición (multipart/form-data).
+• El backend recibe la imagen, aplica el preprocesamiento requerido 
+por el modelo y ejecuta la inferencia con DenseNet121 + CBAM.
+• El backend retorna una respuesta JSON con la clase predicha, 
+probabilidades por clase y el mapa de activación Grad-CAM.
+• El frontend oculta el indicador de progreso, habilita nuevamente el 
+botón 'Predecir' y pasa el resultado a RF-03 y RF-04.
 
 ---
 
-### RF-06: Visualización de métricas del modelo
-**Código de identificación:** RF-06  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 6  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Investigador clínico  
+## Página 5
 
-**Descripción:** El sistema debe mostrar las métricas de rendimiento del modelo seleccionado, incluyendo accuracy, precision y recall, en un formato claro y comprensible.
 
-**Justificación:** Permite evaluar la confiabilidad del modelo y respaldar decisiones clínicas o de investigación.
-
-**Precondiciones:**
-- Modelo seleccionado
-- Métricas disponibles en el sistema
-
-**Restricciones:**
-- Las métricas deben corresponder al modelo seleccionado
-- Datos provenientes de fuente validada
-
-**Dependencia:** Base de datos o configuración de modelos
-
-**Entradas:** Datos de métricas del modelo
-
-**Proceso:**
-1. Recuperar métricas del modelo
-2. Formatear datos
-3. Mostrar en tabla
-
-**Salida:** Tabla con métricas del modelo
-
-**Postcondiciones:** Métricas visibles para el usuario
-
-**Criterios de aceptación:**
-1. Se muestran al menos las métricas: accuracy, precision y recall.
-2. Cada métrica se presenta en porcentaje con máximo 2 decimales (ej: 92.45%).
-3. Las métricas corresponden exactamente al modelo seleccionado.
-4. La información se muestra en formato tabular claro y alineado.
-5. El tiempo de carga de métricas no supera 1 segundo.
-
-**Requerimientos no funcionales:** Usabilidad, rendimiento  
-**Estado:** Pendiente  
-**Observaciones:** Se pueden incluir métricas adicionales como F1-score
+Campo Descripción
+Salida • Objeto JSON con: clase predicha, nivel de confianza, probabilidades 
+de las 4 clases y mapa Grad-CAM.
+• Indicador de progreso visible durante el procesamiento.
+• Mensaje de error específico en caso de fallo de conexión o error 
+interno del servidor.
+Postcondiciones• El resultado de la predicción queda almacenado temporalmente en 
+el estado de la aplicación y disponible para RF-03 y RF-04.
+Criterios de 
+aceptación
+• CA-02.1: El botón 'Predecir' está deshabilitado si no hay imagen 
+cargada.
+• CA-02.2: Al presionar 'Predecir', aparece un indicador de progreso 
+visible en menos de 200 ms.
+• CA-02.3: El tiempo total entre el envío y la recepción del resultado 
+es ≤ 5 segundos bajo condiciones normales de red.
+• CA-02.4: Si el backend no responde, el frontend muestra: 'Error de 
+conexión con el servidor. Intente nuevamente.'
+• CA-02.5: Si el backend retorna un error interno (HTTP 500), el 
+frontend muestra: 'Error al procesar la imagen. Contacte al 
+administrador.'
+• CA-02.6: No es posible enviar una segunda solicitud mientras una 
+predicción está en curso.
+Requerimientos 
+no funcionales
+• Rendimiento: tiempo de inferencia del modelo ≤ 5 s en hardware 
+con GPU; ≤ 15 s en CPU.
+• Fiabilidad: el backend retorna códigos HTTP semánticamente 
+correctos (200, 400, 500).
+• Seguridad: la imagen se transmite sobre HTTPS; no se persiste en 
+el servidor tras la inferencia.
+• Usabilidad: el indicador de progreso es visible y no bloquea 
+completamente la interfaz.
+Estado Pendiente
+Observaciones Si el backend utiliza GPU, el tiempo de respuesta puede reducirse 
+significativamente. Considerar timeout de 15 s para entornos con 
+CPU.
 
 ---
 
-### RF-07: Comparación de modelos de IA
-**Código de identificación:** RF-07  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 7  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Científico de datos  
+## Página 6
 
-**Descripción:** El sistema debe mostrar una tabla comparativa con todos los modelos disponibles y sus métricas de rendimiento.
 
-**Justificación:** Permite seleccionar el modelo más adecuado según precisión y desempeño.
-
-**Precondiciones:** Modelos cargados en el sistema
-
-**Restricciones:** Información debe estar actualizada
-
-**Dependencia:** Base de datos de modelos
-
-**Entradas:** Datos de modelos
-
-**Proceso:**
-1. Recuperar lista de modelos
-2. Obtener métricas
-3. Mostrar tabla comparativa
-
-**Salida:** Tabla comparativa
-
-**Postcondiciones:** Información visible
-
-**Criterios de aceptación:**
-1. Se muestran todos los modelos disponibles (mínimo 4).
-2. Cada modelo incluye accuracy, precision y recall.
-3. La tabla permite comparación visual clara entre modelos.
-4. Los datos están ordenados (ej: por accuracy descendente).
-5. El usuario puede regresar a la pantalla principal en máximo 1 clic.
-
-**Requerimientos no funcionales:** Usabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Se puede agregar filtro o búsqueda
-
----
-
-### RF-08: Navegación del sistema
-**Código de identificación:** RF-08  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 8  
-**Prioridad:** Alta/Must  
-**Dificultad:** Fácil  
-**Actores:** Usuario del sistema  
-
-**Descripción:** El sistema debe permitir navegar de forma intuitiva entre las diferentes páginas del sistema (inicio, análisis, modelos).
-
-**Justificación:** Mejora la experiencia del usuario y evita confusión.
-
-**Precondiciones:** Sistema cargado
-
-**Restricciones:** Navegación basada en interfaz web
-
-**Dependencia:** Frontend
-
-**Entradas:** Acciones del usuario (clics)
-
-**Proceso:**
-1. Mostrar menú
-2. Usuario selecciona opción
-3. Sistema redirige
-
-**Salida:** Página solicitada
-
-**Postcondiciones:** Usuario ubicado en nueva vista
-
-**Criterios de aceptación:**
-1. Existe una barra de navegación visible en todo momento.
-2. Incluye al menos opciones: "Inicio" y "Modelos".
-3. La página activa se resalta visualmente.
-4. El cambio de página ocurre en menos de 2 segundos.
-5. No se pierde información crítica al navegar (ej: imagen cargada opcionalmente persistente).
-
-**Requerimientos no funcionales:** Usabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Puede incluir breadcrumbs
+Campo Descripción
+Título del 
+Requerimiento
+Visualización de resultados de clasificación
+Código de 
+identificación
+RF-03
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia de Usuario 3
+Descripción El sistema debe presentar los resultados del análisis de forma clara e 
+inmediata: clase predicha (estadio de Alzheimer detectado), 
+porcentaje de confianza de la predicción y las probabilidades 
+individuales de las cuatro clases posibles (Non Demented, Very Mild 
+Dementia, Mild Dementia, Moderate Dementia). Los datos se 
+muestran en una tabla y/o gráfico de barras, con formato legible y sin 
+tecnicismos innecesarios.
+Justificación La visualización clara y sin ambigüedad de los resultados es esencial 
+para que el especialista pueda interpretar correctamente el 
+diagnóstico asistido y tomar decisiones clínicas informadas. La 
+presentación de las cuatro probabilidades permite evaluar el grado de 
+certeza del modelo.
+Precondiciones• RF-02 completado con éxito: el backend retornó una respuesta 
+JSON válida con los resultados.
+Restricciones • Siempre se muestran las probabilidades de las cuatro clases, sin 
+excepción.
+• Los porcentajes se presentan con exactamente 2 decimales.
+• La visualización debe ser legible tanto en pantallas de escritorio 
+como en tablets.
+Prioridad Alta/Must
+Dificultad Facil
+Dependencia RF-02
+Actores Médico tratante, Neurorradiólogo
+Entradas • Objeto JSON retornado por el backend con: clase predicha, nivel de 
+confianza y probabilidades por clase.
+Proceso • El frontend recibe la respuesta JSON del backend.
+• El sistema extrae la clase predicha, el porcentaje de confianza y las
 
 ---
 
-### RF-09: Manejo de errores del sistema
-**Código de identificación:** RF-09  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 9  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Usuario  
+## Página 7
 
-**Descripción:** El sistema debe detectar y mostrar mensajes de error claros y específicos ante fallos o entradas inválidas.
 
-**Justificación:** Permite al usuario entender y corregir problemas rápidamente.
-
-**Precondiciones:** Sistema en ejecución
-
-**Restricciones:** Mensajes en español
-
-**Dependencia:** Validaciones frontend y backend
-
-**Entradas:** Errores del sistema
-
-**Proceso:**
-1. Detectar error
-2. Clasificar error
-3. Mostrar mensaje
-
-**Salida:** Mensaje de error
-
-**Postcondiciones:** Usuario informado
-
-**Criterios de aceptación:**
-1. Cada error muestra un mensaje específico (no genérico).
-2. Los mensajes están en español claro y comprensible.
-3. Se incluyen sugerencias de solución (ej: "suba una imagen válida").
-4. Los errores no bloquean completamente la aplicación.
-5. Los mensajes desaparecen o se pueden cerrar manualmente.
-6. Mensajes específicos implementados: "Imagen no válida o corrupta", "No se pudo procesar la imagen", "Error de formato de archivo", "Error en el procesamiento del modelo".
-
-**Requerimientos no funcionales:** Usabilidad, fiabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Clasificar errores: validación, conexión, sistema
+Campo Descripción
+probabilidades de las 4 clases.
+• El sistema renderiza los datos en una tabla con las columnas: 
+Clase, Probabilidad (%).
+• El sistema resalta visualmente la clase predicha (fila destacada o 
+indicador gráfico).
+• Opcionalmente, el sistema renderiza un gráfico de barras horizontal 
+con las 4 probabilidades.
+• Si la respuesta JSON está incompleta, muestra: 'Resultados 
+parciales. Algunos datos no están disponibles.'
+Salida • Tabla con la clase predicha destacada y las probabilidades de las 4 
+clases con 2 decimales.
+• Gráfico de barras horizontal (opcional pero recomendado).
+• Indicador visual del nivel de confianza.
+Postcondiciones• Los resultados permanecen visibles en pantalla hasta que el usuario 
+cargue una nueva imagen o navegue fuera de la sección.
+Criterios de 
+aceptación
+• CA-03.1: La clase detectada se muestra en texto legible (ej. 'Mild 
+Dementia') con su nivel de confianza (ej. '87.50%').
+• CA-03.2: Se muestran las probabilidades individuales de las 4 
+clases con exactamente 2 decimales.
+• CA-03.3: La clase predicha está visualmente diferenciada del resto 
+(color, negrita o ícono).
+• CA-03.4: La visualización completa aparece en menos de 1 
+segundo tras recibir la respuesta del backend.
+• CA-03.5: Si los datos del JSON están incompletos, se muestra un 
+mensaje de advertencia sin bloquear la interfaz.
+Requerimientos 
+no funcionales
+• Usabilidad: los nombres de las clases se muestran en inglés con 
+una nota explicativa en español.
+• Rendimiento: el renderizado de la tabla y/o gráfico ocurre en < 1 s.
+• Accesibilidad: el contraste de colores cumple con WCAG 2.1 nivel 
+AA.
 
 ---
 
-### RF-10: Integración frontend-backend
-**Código de identificación:** RF-10  
-**Tipo de requerimiento:** Funcional  
-**Versión:** 1.0  
-**Fuente:** Historia de Usuario 10  
-**Prioridad:** Alta/Must  
-**Dificultad:** Difícil  
-**Actores:** Sistema (frontend/backend)  
+## Página 8
 
-**Descripción:** El sistema debe permitir la comunicación entre el frontend y el backend mediante una API REST para enviar imágenes y recibir resultados.
 
-**Justificación:** Garantiza el funcionamiento del sistema de IA.
-
-**Precondiciones:** Backend activo
-
-**Restricciones:** Uso de protocolo HTTP/HTTPS
-
-**Dependencia:** API /predict
-
-**Entradas:** Imagen + modelo
-
-**Proceso:**
-1. Envío de solicitud HTTP
-2. Procesamiento backend
-3. Respuesta
-
-**Salida:** JSON con resultados
-
-**Postcondiciones:** Datos disponibles en frontend
-
-**Criterios de aceptación:**
-1. El frontend envía correctamente la imagen y modelo al endpoint /predict.
-2. El backend responde con un JSON estructurado (clase, probabilidades, métricas).
-3. Se maneja correctamente CORS sin errores de navegador.
-4. El tiempo total de comunicación no supera 5 segundos.
-5. En caso de error, se devuelve un código HTTP adecuado (ej: 500, 400).
-
-**Requerimientos no funcionales:** Rendimiento, seguridad  
-**Estado:** Pendiente  
-**Observaciones:** Uso de estándares REST
-
----
-
-## REQUERIMIENTOS NO FUNCIONALES (RNF)
-
-### RNF-01: Rendimiento del sistema
-**Código de identificación:** RNF-01  
-**Tipo de requerimiento:** No funcional  
-**Versión:** 1.0  
-**Fuente:** Requisito de calidad del sistema  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Sistema  
-
-**Descripción:** El sistema debe procesar las solicitudes de predicción y mostrar resultados en tiempos adecuados para uso clínico.
-
-**Justificación:** En entornos médicos, la rapidez en la respuesta es fundamental para la toma de decisiones.
-
-**Precondiciones:** Sistema en funcionamiento
-
-**Restricciones:** Dependencia de recursos del servidor
-
-**Dependencia:** Infraestructura backend
-
-**Entradas:** Solicitudes de predicción
-
-**Proceso:** Procesamiento de imagen y respuesta
-
-**Salida:** Resultado en tiempo óptimo
-
-**Postcondiciones:** Usuario recibe resultados rápidamente
-
-**Criterios de aceptación:**
-1. El tiempo de respuesta de una predicción no debe superar los 5 segundos en condiciones normales.
-2. La carga de imágenes no debe superar 2 segundos.
-3. El sistema soporta al menos 10 usuarios concurrentes sin degradación significativa (>20% aumento de tiempo).
-4. El tiempo de visualización de resultados es menor a 1 segundo tras recibir datos.
-5. El sistema mantiene tiempos estables durante múltiples ejecuciones consecutivas.
-
-**Requerimientos no funcionales:** Rendimiento  
-**Estado:** Pendiente  
-**Observaciones:** Puede requerir optimización o uso de GPU
+Campo Descripción
+• Internacionalización: los valores numéricos usan punto como 
+separador decimal, consistente con el formato del JSON.
+Estado Pendiente
+Observaciones Considerar colas de procesamiento
+Campo Descripción
+Título del 
+Requerimiento
+Generación y visualización del mapa de calor Grad-CAM
+Código de 
+identificación
+RF-04
+Tipo de 
+requerimiento
+Funcional
+Descripción El sistema debe generar y mostrar un mapa de calor Grad-CAM 
+superpuesto sobre la imagen MRI original, resaltando las regiones 
+cerebrales que mayor influencia tuvieron en la decisión del modelo. 
+El mapa se genera sobre la última capa CBAM del modelo 
+DenseNet121, usando la paleta JET con transparencia 0.4. El usuario 
+puede alternar entre la imagen original y la imagen con el mapa 
+superpuesto.
+Justificación La interpretabilidad del modelo es un requisito crítico en aplicaciones 
+clínicas de IA. Grad-CAM permite a los especialistas verificar que el 
+modelo toma decisiones basándose en regiones anatómicamente 
+relevantes, aumentando la confianza clínica y permitiendo auditar el 
+comportamiento del modelo.
+Precondiciones• RF-02 completado: la predicción fue ejecutada exitosamente.
+Restricciones • La imagen MRI original está disponible en memoria del frontend.
+Prioridad Alta
+Dificultad Dificil
+Dependencia RF-03
+Actores Neurorradiólogo, Investigador clínico, Médico especialista
+Entradas • Mapa de activación codificado en base64 retornado por el backend 
+en la respuesta JSON.
+• Imagen MRI original disponible en memoria del frontend.
+Proceso • El frontend recibe el mapa de activación desde la respuesta JSON 
+del backend.
+• El sistema decodifica el mapa de activación y lo redimensiona para
 
 ---
 
-### RNF-02: Usabilidad del sistema
-**Código de identificación:** RNF-02  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Alta/Must  
-**Dificultad:** Fácil  
-**Actores:** Usuario  
+## Página 9
 
-**Descripción:** El sistema debe ser fácil de usar, intuitivo y comprensible para usuarios médicos sin necesidad de capacitación avanzada.
 
-**Justificación:** Facilita la adopción del sistema por profesionales de la salud.
-
-**Precondiciones:** Interfaz disponible
-
-**Restricciones:** Idioma español
-
-**Dependencia:** Diseño UI/UX
-
-**Entradas:** Interacciones del usuario
-
-**Proceso:** Navegación e interacción
-
-**Salida:** Experiencia de usuario fluida
-
-**Postcondiciones:** Usuario completa tareas sin dificultad
-
-**Criterios de aceptación:**
-1. La interfaz está completamente en español.
-2. Un usuario nuevo puede realizar una predicción sin ayuda en menos de 2 minutos.
-3. Los botones y opciones tienen etiquetas claras y comprensibles.
-4. La navegación entre páginas no genera confusión.
-5. No se requieren más de 3 clics para ejecutar una predicción.
-
-**Requerimientos no funcionales:** Usabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Validar con pruebas de usuario
-
----
-
-### RNF-03: Seguridad de la información
-**Código de identificación:** RNF-03  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Alta/Must  
-**Dificultad:** Difícil  
-**Actores:** Sistema  
-
-**Descripción:** El sistema debe garantizar la protección de los datos médicos mediante mecanismos de seguridad adecuados.
-
-**Justificación:** Los datos médicos son sensibles y requieren protección.
-
-**Precondiciones:** Sistema desplegado
-
-**Restricciones:** Cumplimiento de buenas prácticas de seguridad
-
-**Dependencia:** Infraestructura y backend
-
-**Entradas:** Datos médicos
-
-**Proceso:** Protección y transmisión segura
-
-**Salida:** Datos protegidos
-
-**Postcondiciones:** Información segura
-
-**Criterios de aceptación:**
-1. Toda comunicación se realiza mediante HTTPS.
-2. Los archivos cargados no se almacenan permanentemente sin autorización.
-3. No se exponen datos sensibles en el frontend.
-4. El sistema previene accesos no autorizados.
-5. Se validan entradas para evitar ataques (ej: archivos maliciosos).
-
-**Requerimientos no funcionales:** Seguridad  
-**Estado:** Pendiente  
-**Observaciones:** Considerar anonimización de datos
+Campo Descripción
+coincidir con las dimensiones de la imagen original.
+• El sistema aplica la paleta de colores JET al mapa de activación.
+• El sistema superpone el mapa de calor sobre la imagen original con 
+transparencia 0.4.
+• El sistema renderiza la imagen resultante junto a los resultados de 
+RF-03.
+• El sistema habilita un control de alternancia (toggle) entre la imagen 
+original y la imagen con el mapa superpuesto.
+• Si ocurre un error en la generación, muestra: 'No se pudo generar el 
+mapa explicativo.'
+Salida • Imagen MRI con mapa de calor Grad-CAM superpuesto (paleta JET, 
+transparencia 0.4).
+• Control de alternancia entre imagen original y mapa Grad-CAM.
+• Mensaje de error en caso de fallo.
+Postcondiciones• El mapa Grad-CAM queda disponible para descarga (RF-08) y para 
+inclusión en el informe PDF (RF-09).
+Criterios de 
+aceptación
+• CA-04.1: El mapa de calor se genera automáticamente tras la 
+predicción, sin acción adicional del usuario.
+• CA-04.2: La superposición es visualmente correcta: el mapa cubre 
+la imagen original con transparencia 0.4.
+• CA-04.3: Las regiones de mayor relevancia se representan en 
+colores cálidos (rojo/amarillo) y las de menor relevancia en colores 
+fríos (azul).
+• CA-04.4: El control de alternancia funciona correctamente en 
+ambas direcciones (original ↔ Grad-CAM).
+• CA-04.5: El mapa se renderiza en ≤ 3 segundos adicionales tras 
+recibir la respuesta del backend.
+• CA-04.6: Si el backend no retorna el mapa de activación, se 
+muestra el mensaje de error correspondiente sin bloquear la 
+visualización de resultados.
 
 ---
 
-### RNF-04: Fiabilidad del sistema
-**Código de identificación:** RNF-04  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Alta/Must  
-**Dificultad:** Nominal  
-**Actores:** Sistema  
+## Página 10
 
-**Descripción:** El sistema debe operar de manera continua y sin fallos frecuentes.
 
-**Justificación:** Garantiza disponibilidad en entornos clínicos.
-
-**Precondiciones:** Sistema desplegado
-
-**Restricciones:** Dependencia de infraestructura
-
-**Dependencia:** Servidor
-
-**Entradas:** Solicitudes
-
-**Proceso:** Operación continua
-
-**Salida:** Servicio estable
-
-**Postcondiciones:** Sistema disponible
-
-**Criterios de aceptación:**
-1. El sistema tiene una disponibilidad mínima del 95% mensual.
-2. Los errores críticos no superan el 2% de las solicitudes.
-3. El sistema se recupera automáticamente de fallos menores.
-4. No se pierde información durante fallos.
-5. Se registran errores en logs para análisis.
-
-**Requerimientos no funcionales:** Fiabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Implementar logs y monitoreo
-
----
-
-### RNF-05: Compatibilidad del sistema
-**Código de identificación:** RNF-05  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Media/Should  
-**Dificultad:** Fácil  
-**Actores:** Usuario  
-
-**Descripción:** El sistema debe funcionar correctamente en diferentes navegadores y dispositivos modernos.
-
-**Justificación:** Permite acceso desde múltiples entornos.
-
-**Precondiciones:** Sistema web
-
-**Restricciones:** Navegadores modernos
-
-**Dependencia:** Frontend
-
-**Entradas:** Acceso web
-
-**Proceso:** Renderizado
-
-**Salida:** Interfaz funcional
-
-**Postcondiciones:** Sistema usable
-
-**Criterios de aceptación:**
-1. Funciona correctamente en Chrome, Edge y Firefox.
-2. No presenta errores visuales críticos.
-3. La interfaz se adapta a diferentes resoluciones.
-4. Las funciones principales funcionan en todos los navegadores soportados.
-5. No requiere instalación adicional.
-
-**Requerimientos no funcionales:** Compatibilidad  
-**Estado:** Pendiente  
-**Observaciones:** Pruebas cross-browser
+Campo Descripción
+Requerimientos 
+no funcionales
+• Usabilidad: el toggle entre imagen original y mapa es intuitivo y está 
+claramente etiquetado.
+• Rendimiento: el procesamiento de superposición en el frontend 
+ocurre en < 1 s.
+• Fiabilidad: un error en la generación del mapa no impide visualizar 
+los resultados de clasificación (RF-03).
+• Rendimiento (backend): la generación del mapa puede beneficiarse 
+de aceleración por GPU.
+Estado Pendiente
+Observaciones El backend puede retornar el mapa Grad-CAM como imagen PNG 
+codificada en base64 dentro del JSON, o como endpoint separado 
+GET /gradcam/{id}. Definir en contrato de API.
+Campo Descripción
+Título del 
+Requerimiento
+Visualización de métricas de rendimiento del modelo
+Código RF-05
+Tipo Funcional
+Descripción El sistema debe mostrar en la sección 'Modelo' las métricas de 
+rendimiento del modelo DenseNet121 + CBAM obtenidas sobre el 
+conjunto de prueba: Accuracy, Precision (por clase y macro-
+average), Recall (por clase y macro-average) y F1-Score (por clase y 
+macro-average). Los valores se muestran en formato tabular con 2 
+decimales.
+Justificación Transparentar el rendimiento del modelo ante los usuarios clínicos es 
+esencial para establecer confianza y permitir una evaluación crítica 
+del sistema. El especialista debe poder juzgar la validez científica del 
+diagnóstico asistido antes de incorporarlo a su práctica clínica.
+Precondiciones • Las métricas del modelo han sido calculadas sobre el conjunto de 
+prueba y están almacenadas en el sistema (archivo de configuración 
+o endpoint del backend).
+Restricciones • Se muestran únicamente las métricas del conjunto de prueba; no 
+del conjunto de entrenamiento ni validación.
+• Los valores se presentan con exactamente 2 decimales en formato 
+porcentual.
 
 ---
 
-### RNF-06: Escalabilidad del sistema
-**Código de identificación:** RNF-06  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Media  
-**Dificultad:** Difícil  
-**Actores:** Sistema  
+## Página 11
 
-**Descripción:** El sistema debe ser capaz de manejar un incremento en el número de usuarios y solicitudes sin degradación significativa.
 
-**Justificación:** Permite crecimiento del sistema.
-
-**Precondiciones:** Infraestructura disponible
-
-**Restricciones:** Recursos del servidor
-
-**Dependencia:** Backend
-
-**Entradas:** Múltiples solicitudes
-
-**Proceso:** Procesamiento concurrente
-
-**Salida:** Respuestas estables
-
-**Postcondiciones:** Sistema estable
-
-**Criterios de aceptación:**
-1. El sistema soporta al menos 50 usuarios concurrentes.
-2. El tiempo de respuesta no aumenta más del 30% bajo carga.
-3. No se generan caídas del sistema bajo carga moderada.
-4. Se pueden agregar recursos (horizontal/vertical).
-5. El sistema mantiene estabilidad durante pruebas de estrés.
-
-**Requerimientos no funcionales:** Escalabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Uso de cloud recomendado
-
----
-
-### RNF-07: Mantenibilidad del sistema
-**Código de identificación:** RNF-07  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Media  
-**Dificultad:** Nominal  
-**Actores:** Desarrollador  
-
-**Descripción:** El sistema debe ser fácil de mantener, actualizar y modificar.
-
-**Justificación:** Reduce costos de desarrollo a largo plazo.
-
-**Precondiciones:** Código implementado
-
-**Restricciones:** Buenas prácticas
-
-**Dependencia:** Código fuente
-
-**Entradas:** Cambios en el sistema
-
-**Proceso:** Modificación
-
-**Salida:** Sistema actualizado
-
-**Postcondiciones:** Código mantenible
-
-**Criterios de aceptación:**
-1. El código está documentado en al menos un 70%.
-2. Se siguen estándares de codificación.
-3. Los módulos están desacoplados.
-4. Se pueden hacer cambios sin afectar otros módulos.
-5. Existe control de versiones.
-
-**Requerimientos no funcionales:** Mantenibilidad  
-**Estado:** Pendiente  
-**Observaciones:** Uso de Git recomendado
+Campo Descripción
+• Las métricas son estáticas (precalculadas); no se recalculan en 
+tiempo real.
+Prioridad Alta
+Dificultad Facil
+Dependencia Investigador clínico, Médico especialista
+Actores • Métricas precalculadas almacenadas en el sistema: Accuracy, 
+Precision, Recall, F1-Score por clase y macro-average.
+Entradas • El usuario navega a la sección 'Modelo' mediante la barra de 
+navegación (RF-06).
+• El sistema recupera las métricas del almacenamiento local (archivo 
+JSON o endpoint GET /metrics).
+• El sistema renderiza una tabla con las columnas: Clase | Precision 
+(%) | Recall (%) | F1-Score (%).
+• El sistema muestra una fila adicional con los valores macro-
+average.
+• El sistema muestra el Accuracy global del modelo.
+• Si los datos no están disponibles, muestra: 'Métricas no disponibles 
+en este momento.'
+Proceso • Tabla de métricas por clase y macro-average.
+• Valor de Accuracy global del modelo.
+• Mensaje informativo si los datos no están disponibles.
+Salida • Las métricas quedan visibles para el usuario hasta que navegue a 
+otra sección.
+Postcondiciones• CA-05.1: La tabla muestra Precision, Recall y F1-Score para cada 
+una de las 4 clases.
+• CA-05.2: La tabla incluye una fila de macro-average.
+• CA-05.3: El Accuracy global del modelo se muestra de forma 
+prominente (ej. 99.38%).
+• CA-05.4: Todos los valores se muestran con exactamente 2 
+decimales en formato porcentual.
 
 ---
 
-### RNF-08: Interoperabilidad del sistema
-**Código de identificación:** RNF-08  
-**Tipo de requerimiento:** No funcional  
-**Prioridad:** Alta  
-**Dificultad:** Nominal  
-**Actores:** Sistema  
+## Página 12
 
-**Descripción:** El sistema debe integrarse correctamente con servicios externos mediante API REST.
 
-**Justificación:** Permite comunicación entre sistemas.
-
-**Precondiciones:** API disponible
-
-**Restricciones:** Estándares REST
-
-**Dependencia:** Backend
-
-**Entradas:** Solicitudes HTTP
-
-**Proceso:** Comunicación API
-
-**Salida:** Respuestas JSON
-
-**Postcondiciones:** Integración funcional
-
-**Criterios de aceptación:**
-1. El sistema usa métodos HTTP estándar (GET, POST).
-2. Los datos se envían en formato JSON.
-3. Las respuestas contienen códigos HTTP correctos.
-4. Se maneja CORS correctamente.
-5. La API responde en menos de 5 segundos.
-
-**Requerimientos no funcionales:** Interoperabilidad  
-**Estado:** Pendiente  
-**Observaciones:** Documentar API
-
----
-
-## HISTORIAS DE USUARIO (HU)
-
-### HU-01: Subida y análisis de imágenes MRI
-**ID:** HU-01  
-**Nombre:** Subida y análisis de imágenes MRI  
-**Actor:** Médico especialista  
-**Prioridad:** Alta  
-**Frecuencia de uso:** Alta  
-
-**Descripción (Historia):** Como médico especialista, quiero poder subir imágenes de resonancia magnética cerebral (MRI) al sistema para obtener un diagnóstico asistido por inteligencia artificial sobre posibles signos de Alzheimer.
-
-**Objetivo:** Obtener apoyo diagnóstico automatizado basado en IA
-
-**Valor de negocio:** Reduce tiempo de diagnóstico y mejora precisión clínica
-
-**Precondiciones:**
-- Acceso al sistema mediante enlace o despliegue local
-- Interfaz de análisis cargada correctamente
-
-**Flujo principal:**
-1. El usuario accede al sistema
-2. Selecciona una imagen MRI
-3. El sistema valida el archivo
-4. Se muestra vista previa
-5. La imagen queda lista para análisis
-
-**Flujos alternos:**
-- Archivo inválido → se muestra error
-- Tamaño excedido → se rechaza carga
-
-**Postcondiciones:** Imagen cargada correctamente y lista para predicción
-
-**Reglas de negocio:**
-- Solo formatos JPG, PNG, DICOM
-- Tamaño máximo permitido
-
-**Criterios de aceptación:**
-1. El sistema permite cargar archivos JPG, PNG y DICOM.
-2. Se muestra una vista previa en menos de 2 segundos.
-3. Archivos inválidos generan mensaje claro.
-4. No se permite continuar sin imagen válida.
-5. La imagen queda disponible para análisis.
-
-**Observaciones:** Acceso restringido por distribución del sistema
+Campo Descripción
+• CA-05.5: La sección se carga completamente en menos de 1 
+segundo.
+Criterios de 
+aceptación
+• Usabilidad: cada métrica incluye un tooltip o leyenda breve con su 
+definición.
+• Rendimiento: carga en < 1 s desde almacenamiento local o cache.
+• Fiabilidad: si el endpoint de métricas falla, el sistema muestra datos 
+desde un archivo estático de respaldo.
+• Trazabilidad: la sección indica la fecha de evaluación del modelo y 
+el dataset utilizado.
+Requerimientos 
+no funcionales
+• Usabilidad: cada métrica incluye un tooltip o leyenda breve con su 
+definición.
+• Rendimiento: carga en < 1 s desde almacenamiento local o cache.
+• Fiabilidad: si el endpoint de métricas falla, el sistema muestra datos 
+desde un archivo estático de respaldo.
+• Trazabilidad: la sección indica la fecha de evaluación del modelo y 
+el dataset utilizado.
+Estado Pendiente
+Observaciones Valores de referencia del modelo DenseNet121 + CBAM sobre el 
+conjunto de prueba: Accuracy 99.38%, Precision macro 99.55%. 
+Estos valores deben actualizarse si el modelo es reentrenado.
+Campo Descripción
+Título del 
+Requerimiento
+Navegación entre secciones del sistema
+Código de 
+identificación
+RF-06
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia de Usuario 6
+Descripción El sistema debe proporcionar una barra de navegación superior 
+persistente que permita al usuario desplazarse entre las secciones 
+'Inicio' (carga, predicción y resultados) y 'Modelo' (métricas de 
+rendimiento). La sección activa debe estar visualmente diferenciada.
 
 ---
 
-### HU-02: Selección de modelo de IA
-**ID:** HU-02  
-**Nombre:** Selección de modelo de IA  
-**Actor:** Investigador médico  
-**Prioridad:** Alta  
-**Frecuencia:** Media  
+## Página 13
 
-**Descripción:** Como investigador médico, quiero seleccionar entre diferentes modelos de deep learning para comparar resultados y elegir el más adecuado.
 
-**Objetivo:** Evaluar desempeño de modelos
-
-**Valor de negocio:** Mejora la precisión del diagnóstico
-
-**Precondiciones:**
-- Sistema accesible
-- Modelos cargados
-
-**Flujo principal:**
-1. Usuario visualiza modelos
-2. Consulta métricas
-3. Selecciona modelo
-
-**Flujos alternos:** No hay modelos → mensaje informativo
-
-**Postcondiciones:** Modelo seleccionado
-
-**Reglas de negocio:** Solo modelos disponibles en el sistema
-
-**Criterios de aceptación:**
-1. Se muestran al menos 4 modelos.
-2. Se visualizan métricas por modelo.
-3. El modelo seleccionado se resalta.
-4. Puede cambiarse antes de predecir.
-5. Se guarda selección actual.
-
-**Observaciones:** Acceso sin autenticación
-
----
-
-### HU-03: Ejecución de predicción
-**ID:** HU-03  
-**Nombre:** Ejecución de predicción  
-**Actor:** Profesional de la salud  
-**Prioridad:** Alta  
-**Frecuencia:** Alta  
-
-**Descripción:** Como profesional de la salud, quiero ejecutar el análisis de la imagen MRI con un solo clic para obtener rápidamente una predicción.
-
-**Objetivo:** Obtener diagnóstico automatizado
-
-**Valor de negocio:** Reduce tiempo de análisis
-
-**Precondiciones:**
-- Imagen cargada
-- Modelo seleccionado
-
-**Flujo principal:**
-1. Usuario presiona "Predecir"
-2. Sistema valida datos
-3. Envía solicitud
-4. Recibe resultado
-
-**Flujos alternos:**
-- Error de conexión
-- Falta de imagen
-
-**Postcondiciones:** Resultado generado
-
-**Reglas de negocio:** No ejecutar sin datos completos
-
-**Criterios de aceptación:**
-1. Botón deshabilitado sin imagen.
-2. Indicador de carga visible.
-3. Tiempo ≤ 5 segundos.
-4. Error claro si falla conexión.
-5. No duplicación de solicitudes.
-
-**Observaciones:** Sistema de acceso controlado
+Campo Descripción
+Al regresar a 'Inicio', el último resultado de predicción debe 
+permanecer visible si existe.
+Justificación Una navegación clara y persistente es fundamental para la 
+usabilidad del sistema. La pérdida de resultados al navegar entre 
+secciones genera frustración y obliga al usuario a repetir análisis, 
+impactando negativamente el flujo de trabajo clínico.
+Precondiciones • El sistema está cargado correctamente en el navegador del usuario.
+Restricciones • La barra de navegación debe estar visible en todas las 
+páginas/secciones de la aplicación.
+• La sección activa debe estar resaltada visualmente en todo 
+momento.
+• La navegación no debe causar pérdida del último resultado de 
+predicción.
+Prioridad Alta/Must
+Dificultad Facil
+Dependencia Ninguna
+Actores Cualquier usuario del sistema
+Entradas • Clic del usuario sobre un ítem de la barra de navegación ('Inicio' o 
+'Modelo').
+Proceso • El sistema renderiza la barra de navegación superior en todas las 
+vistas.
+• El usuario hace clic en un ítem de la barra de navegación.
+• El sistema actualiza la vista activa y resalta el ítem correspondiente.
+• Si el usuario regresa a 'Inicio' y existe un resultado de predicción en 
+el estado de la aplicación, lo muestra.
+• Si ocurre un error al cargar una sección, muestra: 'Error al cargar la 
+página. Intente nuevamente.'
+Salida • Vista correspondiente a la sección seleccionada.
+• Barra de navegación con el ítem activo resaltado.
+• Persistencia del último resultado de predicción al regresar a 'Inicio'.
+Postcondiciones• El usuario se encuentra en la sección solicitada con el estado de la 
+aplicación intacto.
 
 ---
 
-### HU-04: Visualización de resultados
-**ID:** HU-04  
-**Nombre:** Visualización de resultados  
-**Actor:** Médico tratante  
-**Prioridad:** Alta  
-**Frecuencia:** Alta  
+## Página 14
 
-**Descripción:** Como médico tratante, quiero ver los resultados del análisis para tomar decisiones informadas.
 
-**Objetivo:** Interpretar resultados
-
-**Valor de negocio:** Mejora decisiones clínicas
-
-**Precondiciones:** Predicción realizada
-
-**Flujo principal:** Mostrar resultados
-
-**Postcondiciones:** Datos visibles
-
-**Reglas de negocio:** Mostrar todas las clases
-
-**Criterios de aceptación:**
-1. Se muestra clase detectada.
-2. Se muestra confianza.
-3. Se muestran probabilidades.
-4. Datos claros.
-5. Tiempo < 1 segundo.
-
-**Observaciones:** —
-
----
-
-### HU-05: Visualización Grad-CAM
-**ID:** HU-05  
-**Nombre:** Visualización Grad-CAM  
-**Actor:** Neurorradiólogo  
-**Prioridad:** Alta  
-**Frecuencia de uso:** Media  
-
-**Descripción (Historia):** Como neurorradiólogo, quiero visualizar el mapa de calor Grad-CAM sobre la imagen MRI para entender qué regiones del cerebro fueron relevantes en la predicción del modelo.
-
-**Objetivo:** Interpretar el comportamiento del modelo de IA
-
-**Valor de negocio:** Aumenta la confianza y validación clínica del sistema
-
-**Precondiciones:**
-- Sistema accesible
-- Predicción realizada previamente
-
-**Flujo principal:**
-1. El sistema recibe resultado de predicción
-2. Genera mapa Grad-CAM
-3. Superpone mapa sobre imagen original
-4. Muestra resultado al usuario
-
-**Flujos alternos:** Error en generación → mensaje: "No se pudo generar el mapa explicativo"
-
-**Postcondiciones:** Imagen explicativa disponible
-
-**Reglas de negocio:**
-- Solo disponible tras predicción
-- Depende del modelo seleccionado
-
-**Criterios de aceptación:**
-1. El mapa Grad-CAM se genera automáticamente tras la predicción.
-2. Se muestra superpuesto a la imagen original.
-3. Las zonas de mayor relevancia se visualizan en colores cálidos (rojo/amarillo).
-4. El usuario puede alternar entre imagen original y mapa.
-5. El tiempo de generación no supera los 3 segundos.
-
-**Observaciones:** Puede requerir aceleración por GPU
+Campo Descripción
+Criterios de 
+aceptación
+• CA-06.1: La barra de navegación es visible en todas las secciones 
+de la aplicación.
+• CA-06.2: La barra incluye al menos los ítems 'Inicio' y 'Modelo'.
+• CA-06.3: El ítem de la sección activa está visualmente diferenciado 
+(color, subrayado o indicador).
+• CA-06.4: El cambio de sección se completa en menos de 2 
+segundos.
+• CA-06.5: Al regresar a 'Inicio' desde 'Modelo', el último resultado de 
+predicción (si existe) permanece visible.
+Requerimientos 
+no funcionales
+• Usabilidad: la barra de navegación es responsive y funciona 
+correctamente en pantallas de 768px o más de ancho.
+• Rendimiento: el cambio de sección no requiere recarga completa 
+de la página (SPA o navegación por estado).
+• Accesibilidad: los ítems de navegación son accesibles mediante 
+teclado y tienen atributos aria-label correctos.
+Estado Pendiente
+Observaciones
+Campo Descripción
+Título del 
+Requerimiento
+Gestión centralizada de errores del sistema
+Código de 
+identificación
+RF-07
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia de Usuario 7
+Descripción El sistema debe detectar y clasificar los errores que ocurran durante 
+su operación (errores de validación de entrada, errores de conexión 
+con el backend y errores internos del servidor) y mostrar al usuario 
+un mensaje descriptivo, específico y en español, con una sugerencia 
+de acción cuando sea posible. Los mensajes no deben exponer 
+detalles técnicos internos (stack traces, códigos HTTP crudos).
 
 ---
 
-### HU-06: Visualización de métricas del modelo
-**ID:** HU-06  
-**Nombre:** Visualización de métricas del modelo  
-**Actor:** Investigador clínico  
-**Prioridad:** Alta  
-**Frecuencia:** Media  
+## Página 15
 
-**Descripción:** Como investigador clínico, quiero visualizar las métricas del modelo utilizado para evaluar su confiabilidad en el diagnóstico.
 
-**Objetivo:** Evaluar rendimiento del modelo
-
-**Valor de negocio:** Mejora la validación científica del sistema
-
-**Precondiciones:**
-- Sistema accesible
-- Modelo seleccionado
-
-**Flujo principal:**
-1. Usuario accede a métricas
-2. Sistema obtiene datos del modelo
-3. Muestra métricas en tabla
-
-**Flujos alternos:** No hay datos → mensaje informativo
-
-**Postcondiciones:** Métricas visibles
-
-**Reglas de negocio:** Métricas deben corresponder al modelo activo
-
-**Criterios de aceptación:**
-1. Se muestran accuracy, precision y recall.
-2. Los valores se presentan en porcentaje con máximo 2 decimales.
-3. Las métricas corresponden al modelo seleccionado.
-4. Se muestran en formato tabular claro.
-5. Se cargan en menos de 1 segundo.
-
-**Observaciones:** Se pueden incluir métricas adicionales
-
----
-
-### HU-07: Comparación de modelos
-**ID:** HU-07  
-**Nombre:** Comparación de modelos  
-**Actor:** Científico de datos  
-**Prioridad:** Alta  
-**Frecuencia:** Media  
-
-**Descripción:** Como científico de datos, quiero visualizar una tabla comparativa de los modelos disponibles para seleccionar el más adecuado según su rendimiento.
-
-**Objetivo:** Comparar modelos
-
-**Valor de negocio:** Optimiza selección de modelos
-
-**Precondiciones:** Modelos disponibles
-
-**Flujo principal:**
-1. Usuario accede a vista de modelos
-2. Sistema carga datos
-3. Muestra tabla comparativa
-
-**Flujos alternos:** Sin modelos → mensaje informativo
-
-**Postcondiciones:** Comparación disponible
-
-**Reglas de negocio:** Mostrar métricas clave
-
-**Criterios de aceptación:**
-1. Se muestran todos los modelos disponibles (mínimo 4).
-2. Cada modelo incluye accuracy, precision y recall.
-3. La tabla permite comparación clara entre modelos.
-4. Los modelos se ordenan por accuracy descendente.
-5. El usuario puede regresar a la página principal en máximo 1 clic.
-
-**Observaciones:** Puede incluir filtros
+Campo Descripción
+Justificación Un manejo de errores claro y consistente reduce la frustración del 
+usuario, minimiza las consultas de soporte técnico y evita que el 
+sistema quede en un estado irrecuperable ante fallos parciales. En un 
+contexto clínico, la ambigüedad ante un error puede llevar a 
+decisiones equivocadas.
+Precondiciones• El sistema está en ejecución y el usuario está interactuando con 
+alguna funcionalidad.
+Restricciones • Todos los mensajes de error deben estar en español claro y sin 
+tecnicismos.
+• No se debe mostrar el código HTTP crudo ni el stack trace al 
+usuario final.
+• Los errores no deben bloquear la aplicación permanentemente; el 
+usuario debe poder recuperarse.
+• Los mensajes de error deben poder cerrarse manualmente.
+Prioridad Alta/Must
+Dificultad Nominal
+Dependencia RF-01, RF-02, RF-04, RF-05, RF-06, RF-08, RF-09
+Actores Cualquier usuario del sistema
+Entradas • Evento de error generado por cualquier módulo del sistema 
+(validación, red, servidor).
+Proceso • El sistema detecta el error (excepción capturada, respuesta HTTP 
+con código de error, timeout).
+• El sistema clasifica el error según su tipo: validación, conexión o 
+interno.
+• El sistema muestra un componente de notificación no bloqueante 
+con el mensaje correspondiente y la sugerencia de acción.
+• El usuario puede cerrar el mensaje manualmente o el sistema lo 
+oculta automáticamente tras un tiempo configurable.
+• Para errores críticos (ej. fallo total de carga), se muestra un 
+mensaje reforzado con la opción 'Recargar página'.
+Salida • Notificación visible con mensaje de error específico en español.
+• Sugerencia de acción correctiva.
 
 ---
 
-### HU-08: Navegación del sistema
-**ID:** HU-08  
-**Nombre:** Navegación del sistema  
-**Actor:** Usuario  
-**Prioridad:** Alta  
-**Frecuencia:** Alta  
+## Página 16
 
-**Descripción:** Como usuario con acceso al sistema, quiero navegar entre las diferentes páginas para utilizar todas las funcionalidades sin confusión.
 
-**Objetivo:** Facilitar uso del sistema
-
-**Valor de negocio:** Mejora experiencia del usuario
-
-**Precondiciones:** Sistema accesible
-
-**Flujo principal:**
-1. Usuario visualiza menú
-2. Selecciona opción
-3. Sistema redirige
-
-**Flujos alternos:** Error de navegación → mensaje
-
-**Postcondiciones:** Usuario en nueva vista
-
-**Reglas de negocio:** Navegación persistente
-
-**Criterios de aceptación:**
-1. Existe barra de navegación visible en todo momento.
-2. Incluye al menos "Inicio" y "Modelos".
-3. La página actual se resalta visualmente.
-4. El cambio de página ocurre en menos de 2 segundos.
-5. No se pierde información crítica durante la navegación.
-
-**Observaciones:** Puede incluir breadcrumbs
-
----
-
-### HU-09: Manejo de errores
-**ID:** HU-09  
-**Nombre:** Manejo de errores  
-**Actor:** Usuario  
-**Prioridad:** Alta  
-**Frecuencia:** Alta  
-
-**Descripción:** Como usuario, quiero recibir mensajes claros cuando ocurren errores para entender qué salió mal y cómo solucionarlo.
-
-**Objetivo:** Mejorar interacción y solución de problemas
-
-**Valor de negocio:** Reduce errores de uso
-
-**Precondiciones:** Sistema en ejecución
-
-**Flujo principal:**
-1. Sistema detecta error
-2. Clasifica tipo
-3. Muestra mensaje
-
-**Flujos alternos:** Error crítico → mensaje reforzado
-
-**Postcondiciones:** Usuario informado
-
-**Reglas de negocio:** Mensajes en español
-
-**Criterios de aceptación:**
-1. Cada error muestra un mensaje específico (no genérico).
-2. Los mensajes están en español claro.
-3. Se incluyen sugerencias de solución.
-4. Los errores no bloquean completamente el sistema.
-5. Los mensajes pueden cerrarse manualmente.
-
-**Observaciones:** Clasificar errores por tipo
+Campo Descripción
+• Opción de cierre manual del mensaje.
+• Para errores críticos: botón 'Recargar página'.
+Postcondiciones• El usuario está informado del error y puede continuar usando la 
+aplicación o tomar la acción sugerida.
+Criterios de 
+aceptación
+• CA-07.1: Cada tipo de error muestra un mensaje diferenciado (no 
+genérico).
+• CA-07.2: Todos los mensajes están en español y son comprensibles 
+por un usuario no técnico.
+• CA-07.3: Los mensajes incluyen una sugerencia de acción (ej. 
+'Intente nuevamente' o 'Contacte al administrador').
+• CA-07.4: Los mensajes de error pueden cerrarse manualmente 
+mediante un botón visible.
+• CA-07.5: Un error en un módulo (ej. Grad-CAM) no bloquea la 
+funcionalidad de otros módulos (ej. visualización de resultados).
+• CA-07.6: No se muestra al usuario ningún stack trace, código HTTP 
+crudo ni mensaje de error interno del sistema.
+Requerimientos 
+no funcionales
+• Fiabilidad: el sistema maneja excepciones no controladas sin 
+colapsar la aplicación completa.
+• Usabilidad: los mensajes de error tienen contraste suficiente y son 
+visibles sin desplazar la vista del usuario.
+• Trazabilidad: los errores se registran en el log del sistema (sin datos 
+sensibles) para diagnóstico posterior.
+• Seguridad: los mensajes no revelan información de la arquitectura 
+interna del sistema.
+Estado Pendiente
+Observaciones Clasificación de errores: (1) Validación: archivo inválido, campos 
+faltantes. (2) Conexión: timeout, red no disponible, CORS. (3) Interno: 
+error 500, excepción no controlada en el backend.
+Campo Descripción
+Título del 
+Requerimiento
+Descarga del mapa de calor Grad-CAM como imagen PNG
 
 ---
 
-### HU-10: Integración del sistema
-**ID:** HU-10  
-**Nombre:** Integración del sistema  
-**Actor:** Administrador del sistema  
-**Prioridad:** Alta  
-**Frecuencia:** Alta  
+## Página 17
 
-**Descripción:** Como administrador del sistema, quiero que el frontend se comunique correctamente con el backend para asegurar el funcionamiento del sistema de IA.
 
-**Objetivo:** Garantizar funcionamiento técnico
+Campo Descripción
+Código de 
+identificación
+RF-08
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia de Usuario 8
+Descripción El sistema debe permitir al usuario descargar la imagen resultante de 
+la superposición del mapa de calor Grad-CAM sobre la imagen MRI 
+original, en formato PNG. La imagen descargada debe ser idéntica a 
+la visualizada en pantalla. La descarga se inicia desde un botón 
+visible junto al mapa Grad-CAM.
+Justificación El mapa Grad-CAM es evidencia visual del proceso de decisión del 
+modelo. Permitir su descarga facilita su inclusión en informes 
+clínicos, historias médicas electrónicas o publicaciones científicas, 
+extendiendo la utilidad del sistema más allá de la sesión web.
+Precondiciones • RF-04 completado: el mapa Grad-CAM ha sido generado y está 
+visible en la interfaz.
+• El navegador del usuario admite la descarga de archivos 
+(funcionalidad estándar).
+Restricciones • El formato de descarga es exclusivamente PNG.
+• La imagen descargada debe ser pixel-perfect respecto a la 
+visualizada en pantalla.
+• La descarga debe iniciarse en menos de 2 segundos tras la acción 
+del usuario.
+Prioridad Alta/Must
+Dificultad Fácil
+Dependencia RF-04
+Actores Médico especialista, Neurorradiólogo
+Entradas • Clic del usuario sobre el botón 'Descargar mapa'.
+• Imagen compuesta (MRI + Grad-CAM) disponible en memoria del 
+frontend.
+Proceso • El usuario presiona el botón 'Descargar mapa'.
+• El sistema toma la imagen compuesta (MRI + Grad-CAM 
+superpuesto) desde el estado del frontend.
 
-**Valor de negocio:** Asegura operación del sistema
+---
 
-**Precondiciones:** Backend activo
+## Página 18
 
-**Flujo principal:**
-1. Usuario envía solicitud
-2. Frontend envía datos
-3. Backend procesa
-4. Retorna respuesta
 
-**Flujos alternos:**
-- Error de conexión
-- Error de servidor
+Campo Descripción
+• El sistema genera un archivo PNG a partir de la imagen compuesta.
+• El navegador inicia la descarga con el nombre de archivo sugerido 
+(ej. 'gradcam_resultado.png').
+• Si la generación del archivo falla, se muestra: 'No se pudo generar 
+la descarga. Intente nuevamente.'
+Salida • Archivo PNG descargado en el dispositivo del usuario.
+• Mensaje de error si la descarga falla.
+Postcondiciones• El archivo PNG queda almacenado localmente en el dispositivo del 
+usuario. El estado de la aplicación no se altera.
+Criterios de 
+aceptación
+• CA-08.1: El botón 'Descargar mapa' es visible cuando el mapa 
+Grad-CAM está disponible.
+• CA-08.2: El archivo descargado está en formato PNG.
+• CA-08.3: La imagen descargada es visualmente idéntica al mapa 
+Grad-CAM mostrado en pantalla.
+• CA-08.4: La descarga se inicia en menos de 2 segundos tras el clic 
+del usuario.
+• CA-08.5: La funcionalidad opera correctamente en Chrome, Edge y 
+Firefox (últimas versiones estables).
+Requerimientos 
+no funcionales
+• Usabilidad: el botón de descarga está claramente identificado con 
+ícono y etiqueta de texto.
+• Compatibilidad: la descarga usa la API nativa del navegador 
+(elemento  con atributo download) sin dependencias externas.
+• Rendimiento: la generación del PNG desde canvas ocurre en el hilo 
+principal sin bloquear la interfaz.
+Estado Pendiente
+Observaciones La imagen puede generarse desde un elemento HTML Canvas que 
+ya contenga la superposición, usando canvas.toBlob() o 
+canvas.toDataURL() con tipo 'image/png'.
 
-**Postcondiciones:** Datos disponibles en frontend
+---
 
-**Reglas de negocio:** Uso de API REST
+## Página 19
 
-**Criterios de aceptación:**
-1. El frontend envía correctamente imagen y modelo al endpoint /predict.
-2. El backend responde con JSON estructurado.
-3. Se maneja correctamente CORS.
-4. El tiempo de respuesta es menor a 5 segundos.
-5. Se gestionan correctamente errores HTTP (400, 500).
 
-**Observaciones:** Uso de estándares REST
+Campo Descripción
+Título del 
+Requerimiento
+Generación y descarga de informe de resultados en PDF
+Código de 
+identificación
+RF-09
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Médico tratante / Especialista clínico
+Descripción El sistema debe permitir al usuario generar y descargar un informe 
+en formato PDF que consolide los resultados del análisis. El informe 
+debe incluir: fecha y hora del análisis, imagen MRI original, clase 
+predicha, nivel de confianza, tabla de probabilidades por clase y el 
+mapa de calor Grad-CAM. El tamaño máximo del PDF es 5 MB.
+Justificación Un informe descargable y portable permite integrar el diagnóstico 
+asistido en los flujos de trabajo clínicos existentes: historia clínica 
+electrónica, interconsultas, presentaciones de caso o archivos de 
+investigación. El PDF es el formato estándar para documentación 
+clínica formal.
+Precondiciones• RF-02 completado: la predicción fue ejecutada exitosamente.
+• RF-04 completado: el mapa Grad-CAM está disponible.
+• Todos los datos necesarios están en el estado de la aplicación.
+Restricciones • El PDF debe incluir obligatoriamente: fecha/hora, imagen original, 
+clase predicha, confianza, probabilidades por clase y mapa Grad-
+CAM.
+• Tamaño máximo del archivo PDF: 5 MB.
+• La descarga debe iniciarse en menos de 3 segundos tras la 
+solicitud del usuario.
+• El PDF debe ser legible en cualquier visor de PDF estándar (Adobe 
+Acrobat, navegadores modernos).
+Prioridad Alta/Must
+Dificultad Nominal
+Dependencia RF-02, RF-04
+Actores Médico tratante, Especialista clínico
+
+---
+
+## Página 20
+
+
+Campo Descripción
+Entradas • Datos del estado de la aplicación: fecha/hora del análisis, imagen 
+original, clase predicha, nivel de confianza, probabilidades por clase, 
+imagen Grad-CAM.
+Proceso • El usuario presiona el botón 'Descargar informe'.
+• El sistema recopila todos los datos necesarios del estado de la 
+aplicación.
+• El sistema genera el documento PDF con la estructura definida: 
+encabezado, imagen original, resultados tabulares, mapa Grad-CAM 
+y pie de página.
+• El sistema verifica que el tamaño del PDF no supere 5 MB.
+• El navegador inicia la descarga con el nombre sugerido (ej. 
+'informe_alzheimer_YYYY-MM-DD.pdf').
+• Si la generación falla, muestra: 'No se pudo generar el informe. 
+Intente nuevamente.'
+Salida • Archivo PDF descargado en el dispositivo del usuario.
+• Mensaje de error si la generación falla.
+Postcondiciones• El archivo PDF queda almacenado localmente en el dispositivo del 
+usuario. El estado de la aplicación no se altera.
+Criterios de 
+aceptación
+• CA-09.1: El PDF incluye todos los elementos requeridos: 
+fecha/hora, imagen original, clase predicha, confianza, 
+probabilidades por clase y mapa Grad-CAM.
+• CA-09.2: El PDF es legible y bien estructurado en Adobe Acrobat y 
+en Chrome/Edge.
+• CA-09.3: La descarga se inicia en menos de 3 segundos.
+• CA-09.4: El tamaño del PDF no supera 5 MB.
+• CA-09.5: La funcionalidad opera correctamente en los navegadores 
+Chrome, Edge y Firefox (últimas versiones estables).
+Requerimientos 
+no funcionales
+• Usabilidad: el PDF incluye un pie de página con texto: 'Este informe 
+es un apoyo diagnóstico. No reemplaza el criterio médico.'
+• Rendimiento: la generación del PDF ocurre en el cliente (ej. jsPDF 
++ html2canvas) sin enviar datos al servidor.
+
+---
+
+## Página 21
+
+
+Campo Descripción
+• Privacidad: la imagen MRI del paciente no se envía a servidores 
+externos durante la generación del PDF.
+• Compatibilidad: el PDF cumple con el estándar PDF/A para 
+archivado de largo plazo.
+Estado Pendiente
+Observaciones Usar librería jsPDF con html2canvas para la generación en cliente. Si 
+las imágenes son de alta resolución, comprimir antes de incluirlas 
+para no superar el límite de 5 MB.
+Campo Descripción
+Título del 
+Requerimiento
+Integración frontend–backend mediante API REST
+Código de 
+identificación
+RF-10
+Tipo de 
+requerimiento
+Funcional
+Versión 1.0
+Fuente Historia de Usuario 10
+Descripción El sistema debe garantizar la comunicación bidireccional entre el 
+frontend y el backend mediante una API REST sobre HTTPS. El 
+frontend envía la imagen MRI al endpoint POST /predict y recibe una 
+respuesta JSON estructurada con la clase predicha, las 
+probabilidades por clase y el mapa de activación Grad-CAM. La API 
+debe manejar CORS correctamente y retornar códigos HTTP 
+semánticamente adecuados.
+Justificación La integración frontend–backend es el núcleo técnico que habilita 
+todas las funcionalidades de diagnóstico asistido. Un contrato de API 
+bien definido, con manejo correcto de errores, CORS y formatos de 
+datos, garantiza la interoperabilidad del sistema y facilita el 
+mantenimiento y la escalabilidad futura.
+Precondiciones• El backend está desplegado y accesible desde la red donde opera el 
+frontend.
+• El certificado SSL/TLS está configurado para comunicación HTTPS.
+• Las variables de entorno con la URL base del backend están 
+configuradas en el frontend.
+Restricciones • Toda comunicación debe realizarse sobre HTTPS (HTTP sin cifrado 
+no está permitido en producción).
+
+---
+
+## Página 22
+
+
+Campo Descripción
+• El formato de intercambio de datos es JSON para respuestas; 
+multipart/form-data para el envío de la imagen.
+• El backend debe tener CORS habilitado para el dominio del frontend.
+• El tiempo de respuesta del endpoint /predict no debe superar 5 
+segundos.
+• Los errores del backend deben retornar códigos HTTP 
+semánticamente correctos (400 para errores de cliente, 500 para 
+errores de servidor).
+Prioridad Alta/Must
+Dificultad Normal
+Dependencia RF-01, RF-02
+Actores Sistema frontend, Sistema backend
+Entradas • Solicitud HTTP POST al endpoint /predict con la imagen MRI como 
+archivo (multipart/form-data).
+Proceso • El frontend construye una solicitud HTTP POST con la imagen MRI 
+adjunta como multipart/form-data.
+• El frontend envía la solicitud al endpoint configurado (ej. 
+https://api.dominio.com/predict).
+• El backend valida el formato y tamaño del archivo recibido.
+• El backend ejecuta el preprocesamiento y la inferencia con el 
+modelo DenseNet121 + CBAM.
+• El backend genera el mapa Grad-CAM y serializa todos los 
+resultados en un objeto JSON.
+• El backend retorna la respuesta con HTTP 200 y el JSON 
+estructurado.
+• El frontend deserializa el JSON y distribuye los datos a los módulos 
+RF-03 y RF-04.
+• Ante errores, el backend retorna HTTP 400 (entrada inválida) o 
+HTTP 500 (error interno) con un mensaje descriptivo en el cuerpo 
+JSON.
+
+---
+
+## Página 23
+
+
+Campo Descripción
+Salida • Respuesta HTTP 200 con JSON: {predicted_class, confidence, 
+probabilities: {Non Demented, Very Mild Dementia, Mild Dementia, 
+Moderate Dementia}, gradcam_image (base64)}.
+• Respuesta HTTP 400 o 500 con JSON de error: {error_code, 
+message} ante fallos.
+Postcondiciones• Los datos de la respuesta están disponibles en el estado del 
+frontend para su renderizado por RF-03 y RF-04.
+Criterios de 
+aceptación
+• CA-10.1: El frontend envía correctamente la imagen al endpoint 
+/predict mediante POST multipart/form-data.
+• CA-10.2: El backend retorna una respuesta JSON con todos los 
+campos requeridos (predicted_class, confidence, probabilities, 
+gradcam_image).
+• CA-10.3: CORS está configurado sin errores para el dominio del 
+frontend.
+• CA-10.4: El tiempo de respuesta total del endpoint es ≤ 5 segundos 
+en condiciones normales de red.
+• CA-10.5: Los errores retornan el código HTTP correcto (400 para 
+entrada inválida, 500 para error interno).
+• CA-10.6: La comunicación se realiza exclusivamente sobre HTTPS 
+en el entorno de producción.
+Requerimientos 
+no funcionales
+• Seguridad: la imagen no se almacena en el servidor tras completar 
+la inferencia.
+• Rendimiento: el endpoint /predict responde en ≤ 5 s (GPU) o ≤ 15 s 
+(CPU).
+• Mantenibilidad: la API está documentada con OpenAPI/Swagger y el 
+contrato de respuesta es versionado.
+• Fiabilidad: el backend implementa manejo de excepciones para 
+evitar respuestas HTTP 500 ante entradas malformadas.
+• Escalabilidad: la arquitectura permite agregar endpoints adicionales 
+(ej. /metrics, /gradcam) sin romper el contrato existente.
+Estado Pendiente
+Observaciones Estructura JSON de respuesta esperada: { 'predicted_class': 'Mild 
+Dementia', 'confidence': 87.50, 'probabilities': { 'Non Demented': 5.20,
+
+---
+
+## Página 24
+
+
+Campo Descripción
+'Very Mild Dementia': 4.30, 'Mild Dementia': 87.50, 'Moderate 
+Dementia': 3.00 }, 'gradcam_image': '<base64_string>' }

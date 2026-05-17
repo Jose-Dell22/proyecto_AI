@@ -1,23 +1,32 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AppProvider, useApp } from "./context/AppContext";
 import Navbar from "./components/Navbar";
-
+import ErrorNotification from "./components/ErrorNotification";
 import Home from "./pages/Home";
-import Analysis from "./pages/analysis..jsx";
-import Models from "./pages/models";
+import Analysis from "./pages/Analysis";
+import Model from "./pages/Model";
+import "./styles/main.css";
+
+function AppContent() {
+  const { section } = useApp();
+
+  return (
+    <>
+      <Navbar />
+      <ErrorNotification />
+      <main>
+        {section === "home" && <Home />}
+        {section === "analysis" && <Analysis />}
+        {section === "model" && <Model />}
+      </main>
+    </>
+  );
+}
 
 function App() {
   return (
-    <BrowserRouter>
-
-      <Navbar />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/analysis" element={<Analysis />} />
-        <Route path="/models" element={<Models />} />
-      </Routes>
-
-    </BrowserRouter>
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 

@@ -1,9 +1,16 @@
-version: "3.9"
-
+# Local: frontend only — backend must be running (root docker-compose or python app.py)
 services:
   frontend:
-    build: .
-    container_name: frontend_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:5000}
+        NGINX_CONF: nginx.standalone.conf
+    image: ${DOCKERHUB_USER:-local}/alzheimer-frontend:${IMAGE_TAG:-latest}
+    container_name: alzheimer-frontend
     ports:
-      - "80:80"
-    restart: always
+      - "${FRONTEND_PORT:-8080}:80"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

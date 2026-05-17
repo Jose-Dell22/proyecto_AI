@@ -1,73 +1,90 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../styles/Home.css";
+import { useApp } from "../context/AppContext";
+import "../styles/home.css";
 
-const Inicio = () => {
+const FEATURES = [
+  {
+    index: "01",
+    title: "MRI Analysis",
+    description: "Upload and validate T1 axial brain MRI images for automated review.",
+  },
+  {
+    index: "02",
+    title: "DenseNet121 + CBAM",
+    description: "Classification powered by a convolutional network with attention modules.",
+  },
+  {
+    index: "03",
+    title: "Explainable Output",
+    description: "Class probabilities, confidence scores, and Grad-CAM heatmaps for interpretation.",
+  },
+];
+
+const Home = () => {
+  const { setSection } = useApp();
+
   return (
-    <div className="inicio-container">
-      <div className="inicio-content">
-        <div className="inicio-header">
-          <h1 className="inicio-title">
-            🏥 AI-Powered Diagnosis System
-          </h1>
-          <p className="inicio-subtitle">
-            Alzheimer's disease assisted diagnosis using artificial intelligence
+    <div className="home-container">
+      <div className="home-content">
+        <header className="home-header">
+          <p className="home-eyebrow">Clinical decision support</p>
+          <h1 className="home-title">Alzheimer MRI Diagnosis</h1>
+          <p className="home-subtitle">
+            Assisted screening from structural MRI using deep learning. Results support
+            clinical review and do not replace professional judgment.
           </p>
+        </header>
+
+        <div className="home-features">
+          {FEATURES.map((feature) => (
+            <article key={feature.index} className="feature-card">
+              <span className="feature-index">{feature.index}</span>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </article>
+          ))}
         </div>
 
-        <div className="inicio-features">
-          <div className="feature-card">
-            <div className="feature-icon">🧠</div>
-            <h3>MRI Analysis</h3>
-            <p>Advanced processing of brain magnetic resonance imaging</p>
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">🤖</div>
-            <h3>Advanced AI</h3>
-            <p>DenseNet121 model optimized for early detection</p>
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">📊</div>
-            <h3>Precise Results</h3>
-            <p>Detailed metrics and Grad-CAM visualization for interpretation</p>
-          </div>
+        <div className="home-actions">
+          <button
+            type="button"
+            className="action-button primary"
+            onClick={() => setSection("analysis")}
+          >
+            Start Analysis
+          </button>
+          <button
+            type="button"
+            className="action-button secondary"
+            onClick={() => setSection("model")}
+          >
+            Model Performance
+          </button>
         </div>
 
-        <div className="inicio-actions">
-          <Link to="/analysis" className="action-button primary">
-            🚀 Start Analysis
-          </Link>
-          <Link to="/models" className="action-button secondary">
-            📈 View Models
-          </Link>
-        </div>
-
-        <div className="inicio-info">
-          <div className="info-section">
-            <h4>🎯 How it works?</h4>
+        <div className="home-info">
+          <section className="info-section">
+            <h4>Workflow</h4>
             <ol>
-              <li>Upload a brain MRI image</li>
-              <li>Our AI analyzes the image automatically</li>
-              <li>Receive detailed results with metrics</li>
-              <li>Visualize areas of interest with Grad-CAM</li>
+              <li>Upload a T1 axial brain MRI (JPG or PNG, max 10 MB)</li>
+              <li>Run prediction with the DenseNet121 + CBAM model</li>
+              <li>Review predicted class, confidence, and per-class probabilities</li>
+              <li>Inspect Grad-CAM regions and export reports if needed</li>
             </ol>
-          </div>
+          </section>
 
-          <div className="info-section">
-            <h4>⚡ Key Features</h4>
+          <section className="info-section">
+            <h4>Capabilities</h4>
             <ul>
-              <li>Fast and secure processing</li>
-              <li>Professional medical interface</li>
-              <li>Results with confidence and metrics</li>
-              <li>Advanced result visualization</li>
+              <li>Server-side inference with structured JSON responses</li>
+              <li>Input validation and clear error messaging</li>
+              <li>PDF report and PNG heatmap download</li>
+              <li>Published test-set metrics for model transparency</li>
             </ul>
-          </div>
+          </section>
         </div>
       </div>
     </div>
   );
 };
 
-export default Inicio;
+export default Home;

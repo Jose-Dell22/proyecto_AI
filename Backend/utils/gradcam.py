@@ -67,6 +67,9 @@ def overlay_gradcam(image, cam):
     if not isinstance(image, np.ndarray):
         image = np.array(image)
 
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+
     cam = cv2.resize(cam, (image.shape[1], image.shape[0]))
 
     heatmap = cv2.applyColorMap(
@@ -74,9 +77,11 @@ def overlay_gradcam(image, cam):
         cv2.COLORMAP_JET
     )
 
-    overlay = heatmap * 0.4 + image
+    image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    overlay_bgr = cv2.addWeighted(heatmap, 0.4, image_bgr, 0.6, 0)
+    overlay_rgb = cv2.cvtColor(overlay_bgr, cv2.COLOR_BGR2RGB)
 
-    return np.uint8(overlay)
+    return np.uint8(overlay_rgb)
 
 
 # ==========================
