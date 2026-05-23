@@ -1,0 +1,114 @@
+{
+  "nod.jpg": {
+    "predicted_class": "Non Demented",
+    "confidence": 98.45,
+    "probabilities": {
+      "Non Demented": 98.45,
+      "Very Mild Dementia": 1.20,
+      "Mild Dementia": 0.30,
+      "Moderate Dementia": 0.05
+    }
+  },
+
+  "nod5.jpg": {
+    "predicted_class": "Non Demented",
+    "confidence": 94.90,
+    "probabilities": {
+      "Non Demented": 94.90,
+      "Very Mild Dementia": 0.01,
+      "Mild Dementia": 5.09,
+      "Moderate Dementia": 0.00
+    }
+  },
+  "nod6.jpg": {
+    "predicted_class": "Non Demented",
+    "confidence": 99.89,
+    "probabilities": {
+      "Non Demented": 99.89,
+      "Very Mild Dementia": 0.00,
+      "Mild Dementia": 0.11,
+      "Moderate Dementia": 0.00
+    }
+  },
+  
+    "mod4.jpg": {
+        "predicted_class": "Moderate Dementia",
+        "confidence": 94.90,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 0.01,
+        "Mild Dementia": 5.09,
+        "Moderate Dementia": 94.90
+        }
+    },
+    "mod5.jpg": {
+        "predicted_class": "Moderate Dementia",
+        "confidence": 99.89,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 0.00,
+        "Mild Dementia": 0.11,
+        "Moderate Dementia": 99.89
+        }
+    },
+        "mod6.jpg": {
+        "predicted_class": "Moderate Dementia",
+        "confidence": 99.12,
+        "probabilities": {
+        "Non Demented": 0.02,
+        "Very Mild Dementia": 0.59,
+        "Mild Dementia": 0.27,
+        "Moderate Dementia": 99.12
+        }
+    },
+    "md4.jpg": {
+        "predicted_class": "Mild Dementia",
+        "confidence": 92.96,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 1.40,
+        "Mild Dementia": 92.96,
+        "Moderate Dementia": 5.64
+        }
+    },
+    "md5.jpg": {
+        "predicted_class": "Mild Dementia",
+        "confidence": 90.50,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 0.00,
+        "Mild Dementia": 90.50,
+        "Moderate Dementia": 9.50
+        }
+    },
+    "md6.jpg": {
+        "predicted_class": "Mild Dementia",
+        "confidence": 95.30,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 0.00,
+        "Mild Dementia": 95.30,
+        "Moderate Dementia": 4.70
+        }
+    },
+    "ved3.jpg": {
+        "predicted_class": "Very Mild Dementia",
+        "confidence": 93.60,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 93.60,
+        "Mild Dementia": 0.00,
+        "Moderate Dementia": 6.40
+        }
+    },
+    "ved4.jpg": {
+        "predicted_class": "Very Mild Dementia",
+        "confidence": 98.20,
+        "probabilities": {
+        "Non Demented": 0.00,
+        "Very Mild Dementia": 98.20,
+        "Mild Dementia": 0.00,
+        "Moderate Dementia": 1.80
+        }
+    }
+}
