@@ -94,25 +94,7 @@ def predict_image(model, image_file):
     except Exception as exc:
         logger.warning("GradCAM error: %s", exc)
 
-    # --- MOCK PARA FINES EDUCATIVOS ---
-    filename = (image_file.filename or "").lower()
     final_confidence = round(float(confidence.item()) * 100, 2)
-
-    try:
-        import json
-        import os
-        mock_path = os.path.join(os.path.dirname(__file__), 'mock_predictions.json')
-        if os.path.exists(mock_path):
-            with open(mock_path, 'r', encoding='utf-8') as f:
-                mocks = json.load(f)
-            
-            if filename in mocks:
-                predicted_class = mocks[filename]["predicted_class"]
-                final_confidence = mocks[filename]["confidence"]
-                probabilities = mocks[filename]["probabilities"]
-    except Exception as e:
-        logger.warning("Error leyendo mock JSON: %s", e)
-    # ----------------------------------
 
     return {
         "predicted_class": predicted_class,
