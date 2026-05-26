@@ -22,6 +22,7 @@ CLASSES = [
 TRANSFORM = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 MAX_FILE_SIZE = 10 * 1024 * 1024
@@ -93,9 +94,11 @@ def predict_image(model, image_file):
     except Exception as exc:
         logger.warning("GradCAM error: %s", exc)
 
+    final_confidence = round(float(confidence.item()) * 100, 2)
+
     return {
         "predicted_class": predicted_class,
-        "confidence": round(float(confidence.item()) * 100, 2),
+        "confidence": final_confidence,
         "probabilities": probabilities,
         "gradcam_image": gradcam_b64,
     }
